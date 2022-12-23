@@ -25,6 +25,10 @@ export default function UploadFileModal({ visible, setVisible }) {
     }
 
     const handleSubmit = () => {
+        if(!displayName || !versions.length || !file) {
+            return toast.error("Please fill out all fields!");
+        }
+        
         setLoading(true);
 
         const formData = new FormData();

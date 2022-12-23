@@ -77,7 +77,7 @@ export default function DatapackPage({ datapack, isLoggedIn }) {
                 <Grid xs={12} sm={3} md={2}>
                     <Card css={{ height: 'max-content' }}>
                         <Card.Header css={{ justifyContent: 'center', flexDirection: 'column' }}>
-                            <Button size={"md"} color={'primary'} css={{ m: 'auto' }} icon={<DownloadIcon />}>Download</Button>
+                            <Button size={"md"} color={'primary'} css={{ m: 'auto' }} icon={<DownloadIcon />} onClick={() => window.location.href = `/datapack/${datapack.id}/download`}>Download</Button>
                             <Divider css={{ mt: 10, mb: 10 }} />
                             <div style={{ flexDirection: 'row', display: 'flex'}}>
                                 <HeartIcon />
@@ -129,7 +129,7 @@ export default function DatapackPage({ datapack, isLoggedIn }) {
                                             </Row>
                                             <Row css={{ justifyContent: 'space-between' }}>
                                                 <Text i css={{ fontSize: 14 }}>{parseVersions(file.supportedVersions)}</Text>
-                                                <Button size={"xs"} style={{ width: 15 }}><DownloadIcon /></Button>
+                                                <Button size={"xs"} style={{ width: 15 }} onClick={() => window.location.href = `/datapack/${datapack.id}/download?file=${file.id}`}><DownloadIcon /></Button>
                                             </Row>
                                         </Card.Body>
                                     </Card>
