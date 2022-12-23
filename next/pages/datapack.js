@@ -1,7 +1,7 @@
 import { Card, Text, Grid, Link, Button, Col, Row, Divider, User } from "@nextui-org/react";
 import NextLink from 'next/link'
 import axios from "axios";
-import Page from "../components/page";
+import Page from "../components/Page";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { HeartIcon } from "../components/icons/heart";

@@ -1,5 +1,5 @@
 import { Card, Divider, Grid, Input, Text, Textarea, Image, Row, Button, Col, Switch } from "@nextui-org/react";
-import Page from "../components/page";
+import Page from "../components/Page";
 import { useState, useRef } from "react";
 import { UndoIcon } from "../components/icons/undo";
 import { UploadIcon } from "../components/icons/upload";
