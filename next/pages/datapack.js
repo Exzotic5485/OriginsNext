@@ -94,7 +94,7 @@ export default function DatapackPage({ datapack, isLoggedIn }) {
                             </div>
                             { datapack.isOwner ? (
                             <Row css={{ justifyContent: 'center', mt: 10 }}>
-                                <Button size={"xs"} css={{ backgroundColor: '#ea5c30' }} icon={<EditIcon />}>Edit</Button>
+                                <Button size={"xs"} css={{ backgroundColor: '#ea5c30' }} icon={<EditIcon />} onClick={() => window.location.href = `/datapack/${datapack.id}/edit`}>Edit</Button>
                             </Row>
                             ) : null}
                             <Divider css={{ mt: 10 }} />
