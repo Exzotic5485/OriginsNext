@@ -1,4 +1,5 @@
 import { Card, Text, Grid, Link, Button, Col, Row, Divider, User } from "@nextui-org/react";
+import swal from 'sweetalert';
 import NextLink from 'next/link'
 import axios from "axios";
 import Page from "../components/Page";
@@ -23,11 +24,13 @@ export async function getServerSideProps(context) {
         props: {
             datapack: context.query.datapack || null,
             isLoggedIn: req?.user ? true : false,
+            isModerator: req?.user?.moderator ? true : false,
         },
     };
 }
 
-export default function DatapackPage({ datapack, isLoggedIn }) {
+export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
+    console.log(`Is Mod: ${isModerator}`)
     const [likes, setLikes] = useState(datapack.likes);
     const [liked, setLiked] = useState(datapack.userLiked);
 
@@ -58,6 +61,26 @@ export default function DatapackPage({ datapack, isLoggedIn }) {
         })
     }
 
+    const handleDelete = () => {
+        swal({
+            title: "Are you sure?",
+            text: `You are trying to delete the datapack: "${datapack.title}". This action cannot be undone!`,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+        }).then((value) => {
+            if(value) {
+                axios.delete(`/api/datapack/${datapack.id}`).then((res) => {
+                    toast.success(`Successfully deleted datapack!`)
+
+                    window.location.href = "/"
+                }).catch((e) => {
+                    toast.error(`Failed to delete datapack!`)
+                })
+            }
+        })
+    }
+
     return (
         <Page>
             <Grid.Container justify="center" gap={2}>
@@ -77,7 +100,7 @@ export default function DatapackPage({ datapack, isLoggedIn }) {
                 <Grid xs={12} sm={3} md={2}>
                     <Card css={{ height: 'max-content' }}>
                         <Card.Header css={{ justifyContent: 'center', flexDirection: 'column' }}>
-                            <Button size={"md"} color={'primary'} css={{ m: 'auto' }} icon={<DownloadIcon />} onClick={() => window.location.href = `/datapack/${datapack.id}/download`}>Download</Button>
+                            <Button disabled={datapack.files == 0} size={"md"} color={'primary'} css={{ m: 'auto' }} icon={<DownloadIcon />} onClick={() => window.location.href = `/datapack/${datapack.id}/download`}>Download</Button>
                             <Divider css={{ mt: 10, mb: 10 }} />
                             <div style={{ flexDirection: 'row', display: 'flex'}}>
                                 <HeartIcon />
@@ -92,9 +115,10 @@ export default function DatapackPage({ datapack, isLoggedIn }) {
                                 <Button size={"xs"} color={liked ? "disabled" : "error"} icon={<HeartIcon width={18} />} onClick={handeLikeButton}>Like</Button>
                                 <Button size={"xs"} css={{ backgroundColor: '#FF6466' }} icon={<FlagIcon />}>Report</Button>
                             </div>
-                            { datapack.isOwner ? (
+                            { datapack.isOwner || isModerator ? (
                             <Row css={{ justifyContent: 'center', mt: 10 }}>
-                                <Button size={"xs"} css={{ backgroundColor: '#ea5c30' }} icon={<EditIcon />} onClick={() => window.location.href = `/datapack/${datapack.id}/edit`}>Edit</Button>
+                                <Button size={"xs"} css={{ backgroundColor: '#ea5c30', mr: 5 }} icon={<EditIcon />} onClick={() => window.location.href = `/datapack/${datapack.id}/edit`}>Edit</Button>
+                                <Button size={"xs"} css={{ backgroundColor: '#b80000' }} icon={<TrashIcon width={18} />} onClick={handleDelete}>Delete</Button>
                             </Row>
                             ) : null}
                             <Divider css={{ mt: 10 }} />

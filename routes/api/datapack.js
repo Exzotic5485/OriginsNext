@@ -22,6 +22,10 @@ module.exports = {
             try {
                 const { title, slug, description, summary, tags } = req.body;
 
+                if(!title || !slug || !description || !summary || !tags) return res.send({ error: "Missing fields!" })
+
+                if(await Datapacks.exists({ slug: slug.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase() })) return res.send({ error: "Slug already taken!" })
+
                 console.log(req.body)
 
                 const datapack = await Datapacks.create({
@@ -32,7 +36,8 @@ module.exports = {
                     summary,
                     tags: JSON.parse(tags),
                     owner: req.user._id,
-                    image: req.file ? req.file.filename : "default.png"
+                    image: req.file ? req.file.filename : "default.png",
+                    created: new Date()
                 })
 
                 console.log(datapack)
@@ -112,6 +117,25 @@ module.exports = {
             fs.rmSync(`./public/uploads/files/${datapack._id}/${file.fileName}`)
 
             res.sendStatus(200);
+        })
+
+        router.delete('/:id', checkAuthenticated, checkCanManageDatapack, async (req, res) => {
+            try {
+                const datapack = await Datapacks.findByIdOrSlug(req.params.id);
+
+                if(!datapack) return res.sendStatus(404);
+    
+                if(datapack.image != "default.png") fs.unlinkSync(`./public/uploads/datapack/${datapack.image}`)
+    
+                if(datapack.files.length > 0) fs.rmSync(`./public/uploads/files/${datapack._id}`, { recursive: true })
+    
+                await Datapacks.deleteOne({ _id: datapack._id })
+    
+                res.sendStatus(200);
+            } catch (e) {
+                console.log(e)
+                res.sendStatus(500);
+            }
         })
 
         /*

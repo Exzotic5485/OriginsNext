@@ -23,12 +23,13 @@ module.exports = {
 
             const filters = req.query.filters ? req.query.filters.split(',') : []
             const searchTerm = req.query.search || "";
+            const sort = req.query.sort || "downloads";
 
             console.log(req.query.search)
 
             const query = filters.length > 0 ? { $and: [ { tags: { $all: filters } }, { tags: { $exists: true } }, { title: { $regex: `.*${searchTerm}.*`, $options: 'i' } } ]} : {title: { $regex: `.*${searchTerm}.*`, $options: 'i' }}
     
-            const datapacks = await Datapacks.find(query, { _v: 0 }).skip(pageNumber == 1 ? 0 : (pageNumber * limit) - limit).limit(limit).lean();
+            const datapacks = await Datapacks.find(query, { _v: 0 }).skip(pageNumber == 1 ? 0 : (pageNumber * limit) - limit).limit(limit).lean().sort({ [sort]: -1 });
 
             for (const datapack of datapacks) {
                 datapack.owner = await Users.findById(datapack.owner, { username: 1, _id: 0 }).lean();
@@ -40,7 +41,7 @@ module.exports = {
         })
 
         router.get('/user', async (req, res) => {
-            const user = await Users.findById(req?.user?._id, { username: 1, image: 1, _id: 0 }).lean();
+            const user = await Users.findById(req?.user?._id, { username: 1, image: 1, moderator: 1, _id: 0 }).lean();
 
             user ? res.send(user) : res.sendStatus(401)
         })

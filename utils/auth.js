@@ -21,7 +21,9 @@ function checkAuthenticated(req, res, next) {
 function checkCanManageDatapack(req, res, next) {
     const idOrSlug = req.params.id;
 
-    Datapacks.findOne(isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug }).then((result) => {
+    if(req?.user?.moderator) return next()
+
+    Datapacks.findByIdOrSlug(idOrSlug).then((result) => {
         if(!result) {
             return res.redirect('/datapacks')
         }

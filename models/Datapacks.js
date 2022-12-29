@@ -50,7 +50,8 @@ const schema = new Schema({
             }
         ],
         default: []
-    }
+    },
+    created: Date
 }, {
     statics: {
         findByIdOrSlug(idOrSlug, projection = {}) {

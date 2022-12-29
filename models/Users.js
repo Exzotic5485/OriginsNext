@@ -13,6 +13,10 @@ const schema = new Schema({
     image: {
         type: String,
         default: "default.png"
+    },
+    moderator: {
+        type: Boolean,
+        default: false
     }
 })
 

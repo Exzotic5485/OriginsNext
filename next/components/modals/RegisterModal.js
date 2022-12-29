@@ -11,17 +11,29 @@ export default function LoginModal({ visible, setVisible }) {
 
     const [loading, setLoading] = useState(false)
 
+    const handleUsername = (e) => {
+        const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '');
+
+        if(value.length > 25) return toast.error('Username must be less than 25 characters!')
+
+        setUsername(value)
+    }
+
     const registerClick = (e) => {
 
         const errorToast = () => {
             setLoading(false)
-            toast.error('Something went wrong, try again soon!', { duration: 3000, style: { backgroundColor: '#FF6466', color: '#FFFFFF' }})
+            toast.error('Something went wrong, try again soon!')
         }
 
 
         if(!username || !password || !email) {
-            return toast.error('You must fill out the all the fields!', { duration: 3000, style: { backgroundColor: '#FF6466', color: '#FFFFFF' }})
+            return toast.error('You must fill out the all the fields!')
         }
+
+        if(!email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) return toast.error("Invalid email!")
+
+        if(password.length < 8) return toast.error('Password must be at least 8 characters long!')
 
         setLoading(true)
 
@@ -53,14 +65,13 @@ export default function LoginModal({ visible, setVisible }) {
                 <Text b size={22}>Register</Text>
             </Modal.Header>
             <Modal.Body>
-                <Input clearable bordered label="Username" value={username} onInput={(e) => setUsername(e.target.value)} />
-                <Input clearable bordered label="Email" type="email" value={email} onInput={(e) => setEmail(e.target.value)} />
+                <Input clearable bordered label="Username" value={username} onInput={handleUsername} />
+                <Input clearable bordered label="Email" type="email" value={email} onInput={(e) => setEmail(e.target.value.replace(/[^a-zA-Z0-9-@.+]/g, ''))} />
                 <Input bordered label="Password" type={"password"} value={password} onInput={(e) => setPassword(e.target.value)} />
             </Modal.Body>
             <Modal.Footer>
                 <Button auto onClick={registerClick} disabled={loading}>{loading ? <Loading type="points" color="currentColor" size="sm" /> : "Register"}</Button>
             </Modal.Footer>
-            <Toaster />
         </Modal>
     )
 }

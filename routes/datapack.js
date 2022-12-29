@@ -12,12 +12,6 @@ module.exports = {
             nextApp.render(req, res, '/datapackCreate')
         })
 
-        router.post('/new', checkAuthenticated, async (req, res) => {
-            const data = req.body;
-
-            res.sendStatus(200)
-        })
-
         router.get('/:id/download', async (req, res) => {
             const datapack = await Datapacks.findByIdOrSlug(req.params.id);
 
@@ -66,6 +60,8 @@ module.exports = {
                 datapack.id = datapack._id.toString();
                 delete(datapack._id)
                 delete(datapack.__v)
+
+                datapack.created = datapack.created.toISOString()
 
                 datapack.userLiked = datapack.likes.some(like => like.equals(req?.user?._id))
                 datapack.likes = datapack.likes.length

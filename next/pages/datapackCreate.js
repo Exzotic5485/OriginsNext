@@ -1,4 +1,4 @@
-import { Card, Divider, Grid, Input, Text, Textarea, Image, Row, Button, Col, Switch } from "@nextui-org/react";
+import { Card, Divider, Grid, Input, Text, Textarea, Image, Row, Button, Col, Switch, Loading, Container } from "@nextui-org/react";
 import Page from "../components/Page";
 import { useState, useRef } from "react";
 import { UndoIcon } from "../components/icons/undo";
@@ -14,6 +14,8 @@ import remarkGfm from "remark-gfm";
 
 export default function DatapackCreatePage({  }) {
     const defaultImagePath = "/uploads/datapack/default.png"
+
+    const [creating, setCreating] = useState(false);
 
     const [title, setTitle] = useState('')
     const [slug, setSlug] = useState('')
@@ -82,24 +84,48 @@ export default function DatapackCreatePage({  }) {
         formData.append('image', image)
         formData.append('tags', JSON.stringify(Array.from(tags)))
 
+        setCreating(true)
+
         axios.post('/api/datapack/create', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((res) => {
+
+            if(res?.data?.error) {
+                return toast.error(res.data.error)
+            }
+
             if(res.status == 200) {
-                toast.success("Datapack created successfully")
-                
                 setTimeout(() => {
                     window.location.href = `/datapack/${slug}`
+                    toast.success("Datapack created successfully")
                 }, 3000)
             } else {
                 toast.error("Something went wrong")
             }
         }).catch((e) => {
+            setCreating(false)
             toast.error("Something went wrong")
         })
     }
+
+    if(creating) return (
+        <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            width: '100%',
+            height: '100vh',
+            display: 'grid',
+            placeContent: 'center',
+        }}>
+            <Loading type="points" size="xl" />
+            <Text h6 size={26} css={{ mt: 10 }}>Creating Datapack...</Text>
+        </div>
+    )
 
     return (
         <Page>

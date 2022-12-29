@@ -30,6 +30,7 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
     const [selectedFilters, setSelectedFilters] = useState(currentFilters.length > 0 ? currentFilters.split(",") : []);
     const [datapacks, setDatapacks] = useState([]);
     const [search, setSearch] = useState("");
+    const [sort, setSort] = useState(new Set(["downloads"]));
 
     const handlePageChange = (p) => {
         /*
@@ -49,9 +50,8 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
     };
 
     useEffect(() => {
-        console.log(search);
         axios
-            .get(`/api/datapacks?page=${page}&filters=${selectedFilters.join(",")}&search=${search}`)
+            .get(`/api/datapacks?page=${page}&filters=${selectedFilters.join(",")}&search=${search}&sort=${Array.from(sort)[0]}`)
             .then((res) => {
                 setDatapacks(res.data);
             })
@@ -61,7 +61,7 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
 
                 toast.error(`Error fetching datapacks! Please try again.`, { duration: 3000, style: { backgroundColor: "#FF6466", color: "#FFFFFF", style: { zIndex: 1000 } } });
             });
-    }, [page, selectedFilters, search]);
+    }, [page, selectedFilters, search, sort]);
 
     return (
         <Page currentPage="datapacks">
@@ -85,7 +85,7 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
                     </Card>
                 </Grid>
                 <Grid xs={24} sm={6} direction="column">
-                    <SearchCard searchValue={search} setSearchValue={setSearch} />
+                    <SearchCard searchValue={search} setSearchValue={setSearch} sortValue={sort} setSortValue={setSort} />
                     {datapacks.map((datapack) => {
                         return <Datapack name={datapack.title} description={datapack.description} imageSrc={`/uploads/datapack/${datapack.image}`} slug={datapack.slug} author={datapack.owner?.username} summary={datapack.summary} key={uuidv4()} />;
                     })}

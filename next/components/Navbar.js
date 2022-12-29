@@ -54,7 +54,7 @@ export default function NavbarComponent({ currentPage }) {
     return (
         <Navbar isBordered variant="static">
             <Navbar.Brand>
-                <Image src="/img/logo.png" height={36} width={36} />
+                <Image src="/img/logo.png" showSkeleton={false} height={36} width={36} />
                 <Text b>Site</Text>
             </Navbar.Brand>
             <Navbar.Content activeColor="primary" variant="underline-rounded">
@@ -72,7 +72,7 @@ export default function NavbarComponent({ currentPage }) {
                         user ? (
                             <Dropdown placement="top-right">
                                 <Dropdown.Trigger>
-                                    <Avatar size="md" src={`/uploads/user/${user.image}`} />
+                                    <Avatar bordered={user.moderator} color={user.moderator ? "gradient" : "default"} size="md" src={`/uploads/user/${user.image}`} />
                                 </Dropdown.Trigger>
                                 <Dropdown.Menu onAction={dropdownAction}>
                                     <Dropdown.Item key="profile">

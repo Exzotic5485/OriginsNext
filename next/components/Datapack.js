@@ -1,4 +1,4 @@
-import { Button, Card, Grid, Text, Col } from '@nextui-org/react'
+import { Button, Card, Grid, Text, Col, Link } from '@nextui-org/react'
 
 export default function Datapack({ name, description, author, imageSrc, slug, summary }) {
 
@@ -18,7 +18,9 @@ export default function Datapack({ name, description, author, imageSrc, slug, su
                     <Button size="xs" color="gradient" onClick={downloadClick} css={{ ml: 'auto' }}>Download</Button>
                   </Card.Header>
                   <Card.Body css={{pt: 0}}>
-                      <Text h6 css={{mb: 0, fontSize: 14}}>By <Text b i>{author}</Text></Text>
+                      <Link href={`/user/${author}`}>
+                        <Text h6 css={{mb: 0, fontSize: 14}}>By <Text b i>{author}</Text></Text>
+                      </Link>
                       <Text size={15} color="gray" css={{ pt: 1 }}>
                           {summary}
                       </Text>
