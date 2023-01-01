@@ -3,7 +3,15 @@ const Datapacks = require('../models/Datapacks')
 const { checkAuthenticated, checkCanManageDatapack } = require('../utils/auth')
 
 const { isValidObjectId, Types: { ObjectId } } = require('mongoose')
+const rateLimit = require('express-rate-limit')
 const Users = require('../models/Users')
+
+const downloadLimiter = rateLimit({
+	windowMs: 60 * 1000, // 1 Minute
+	max: 15,
+	standardHeaders: true,
+	legacyHeaders: false,
+})
 
 module.exports = {
     route: '/datapack',
@@ -12,7 +20,7 @@ module.exports = {
             nextApp.render(req, res, '/datapackCreate')
         })
 
-        router.get('/:id/download', async (req, res) => {
+        router.get('/:id/download', downloadLimiter, async (req, res) => {
             const datapack = await Datapacks.findByIdOrSlug(req.params.id);
 
             if(!datapack) return res.sendStatus(404);
@@ -24,7 +32,6 @@ module.exports = {
 
                 if(!file) return res.sendStatus(404);
 
-                await Datapacks.updateOne({ _id: datapack._id }, { $inc: { downloads: 1 } })
                 return res.download(`./public/uploads/files/${datapack._id}/${file.fileName}`)
             }
 

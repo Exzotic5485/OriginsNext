@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 
 const Datapacks = require('../models/Datapacks')
+const Users = require('../models/Users')
 
 function registerRoutes({ server, nextApp }, directory = __dirname, root = '') {
     const files = fs.readdirSync(directory).filter(file => file != 'index.js')
@@ -35,6 +36,17 @@ function router({ nextApp, nextHandler, server }) {
 
         nextApp.render(req, res, "/datapacks");
     });
+
+    router.get("/user/:username", async (req, res) => {
+        const user = await Users.findOne({ username: { $regex: `^${req.params.username}$`, $options: 'i' } }, { password: 0, __v: 0 }).lean();
+
+        if(!user) return res.sendStatus(404)
+
+        user.id = user._id.toString();
+        delete(user._id)
+
+        nextApp.render(req, res, "/user", { user })
+    })
 
     registerRoutes({ nextApp, server })
 
