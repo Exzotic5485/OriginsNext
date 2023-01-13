@@ -3,6 +3,8 @@ import axios from "axios";
 import { useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 
+import { DiscordIcon } from "../icons/discord";
+
 export default function LoginModal({ visible, setVisible }) {
 
     const [username, setUsername] = useState()
@@ -70,6 +72,7 @@ export default function LoginModal({ visible, setVisible }) {
                 <Input bordered label="Password" type={"password"} value={password} onInput={(e) => setPassword(e.target.value)} />
             </Modal.Body>
             <Modal.Footer>
+                <Button auto css={{ backgroundColor: "#7289da" }} icon={<DiscordIcon />} iconLeftCss={{ color: 'white' }} onClick={() => window.location.href = "/auth/discord"}>Discord Login</Button>
                 <Button auto onClick={registerClick} disabled={loading}>{loading ? <Loading type="points" color="currentColor" size="sm" /> : "Register"}</Button>
             </Modal.Footer>
         </Modal>

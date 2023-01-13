@@ -17,7 +17,8 @@ const schema = new Schema({
     moderator: {
         type: Boolean,
         default: false
-    }
+    },
+    discordId: String
 })
 
 module.exports = model('Users', schema)

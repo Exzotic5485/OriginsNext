@@ -3,6 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
+import { DiscordIcon } from "../icons/discord";
 import { LockIcon } from "../icons/lock";
 import { UserIcon } from "../icons/user";
 
@@ -50,6 +51,7 @@ export default function LoginModal({ visible, setVisible }) {
                 <Input bordered label="Password" contentLeft={<LockIcon />} type={"password"} value={password} onInput={(e) => setPassword(e.target.value)} />
             </Modal.Body>
             <Modal.Footer>
+                <Button auto css={{ backgroundColor: "#7289da" }} icon={<DiscordIcon />} iconLeftCss={{ color: 'white' }} onClick={() => window.location.href = "/auth/discord"}>Discord Login</Button>
                 <Button auto onClick={loginClick} disabled={loading}>{loading ? <Loading type="points" color="currentColor" size="sm" /> : "Login"}</Button>
             </Modal.Footer>
         </Modal>

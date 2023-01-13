@@ -2,9 +2,7 @@ import React from 'react'
 
 import Page from '../components/Page'
 
-export default function HomePage({ user }) {
-
-
+export default function HomePage({  }) {
     return (
         <Page></Page>
     )

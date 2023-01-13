@@ -26,6 +26,7 @@
     "next": "^13.0.5",
     "next-themes": "^0.2.1",
     "passport": "^0.6.0",
+    "passport-discord": "^0.1.4",
     "passport-local": "^1.0.0",
     "react": "^18.2.0",
     "react-hot-toast": "^2.4.0",

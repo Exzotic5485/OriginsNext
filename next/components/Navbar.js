@@ -30,7 +30,16 @@ export default function NavbarComponent({ currentPage }) {
             });
     }, [loginModalVisible]);
 
-    useEffect(() => console.log(user), [user])
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if(urlParams.get("loginError")) {
+            toast.error("An error occurred while logging in with discord.")
+
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setLoginModalVisible(true)
+        }
+    }, [])
 
     const isActive = (page) => {
         return currentPage == page;
