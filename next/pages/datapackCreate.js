@@ -1,11 +1,7 @@
-import { Card, Divider, Grid, Input, Text, Textarea, Image, Row, Button, Col, Switch, Loading, Container } from "@nextui-org/react";
+import { Card, Divider, Grid, Input, Text, Textarea, Image, Row, Button,  Switch, Loading } from "@nextui-org/react";
 import Page from "../components/Page";
 import { useState, useRef } from "react";
-import { UndoIcon } from "../components/icons/undo";
-import { UploadIcon } from "../components/icons/upload";
-import Select from 'react-select'
 import TagDropdown from "../components/dropdowns/TagDropdown";
-import VersionsDropdown from "../components/dropdowns/VersionsDropdown";
 import { TrashIcon } from "../components/icons/trash";
 import { toast } from "react-hot-toast";
 import axios from "axios";

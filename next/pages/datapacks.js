@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
-import { Button, Card, Col, Container, Grid, Pagination, Row, Text, Spacer, Checkbox } from "@nextui-org/react";
+import { Card, Grid, Pagination, Row, Text, Checkbox } from "@nextui-org/react";
 
 import Page from "../components/Page";
 import SearchCard from "../components/SearchCard";
 import Datapack from "../components/Datapack";
-import DatapackFilter from "../components/sidebars/DatapackFilter";
 import filters from "../../shared/filters";
 
 export async function getServerSideProps(context) {

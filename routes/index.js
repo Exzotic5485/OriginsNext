@@ -3,7 +3,8 @@ const fs = require('fs')
 const path = require('path')
 
 const Datapacks = require('../models/Datapacks')
-const Users = require('../models/Users')
+const Users = require('../models/Users');
+const { checkIsModerator } = require("../utils/auth");
 
 function registerRoutes({ server, nextApp }, directory = __dirname, root = '') {
     const files = fs.readdirSync(directory).filter(file => file != 'index.js')
@@ -45,7 +46,29 @@ function router({ nextApp, nextHandler, server }) {
         user.id = user._id.toString();
         delete(user._id)
 
+        const datapacks = await Datapacks.find({ owner: user.id }, { title: 1, summary: 1, slug: 1, image: 1, _id: 0 }).lean() || [];
+
+        user.datapacks = datapacks
+
+        user.likes = datapacks.reduce((acc, cur) => {
+            if(!cur.likes) return acc
+            return acc + cur.likes.length
+        }, 0)
+        
+        user.downloads = datapacks.reduce((acc, cur) => {
+            if(!cur.downloads) return acc
+            return acc + cur.downloads.length
+        }, 0)
+
+        if(req.user) user.isUser = user.id == req.user._id;
+
+        user.usernameLastChanged = user.usernameLastChanged ? user.usernameLastChanged.toISOString() : null;
+
         nextApp.render(req, res, "/user", { user })
+    })
+
+    router.get('/admin', checkIsModerator, (req, res) => {
+
     })
 
     registerRoutes({ nextApp, server })

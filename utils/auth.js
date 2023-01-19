@@ -36,4 +36,16 @@ function checkCanManageDatapack(req, res, next) {
     })
 }
 
-module.exports = { checkNotAuthenticated, checkAuthenticated, checkCanManageDatapack }
+function checkCanManageProfile(req, res, next) {
+    if(!req.user) return;
+
+    if(req?.user?.moderator || req.params.id == req.user._id) return next()
+}
+
+function checkIsModerator(req, res, next) {
+    if(!req.user || !req?.user?.moderator) return res.sendStatus(403)
+
+    next()
+}
+
+module.exports = { checkNotAuthenticated, checkAuthenticated, checkCanManageDatapack, checkCanManageProfile, checkIsModerator }

@@ -39,11 +39,5 @@ module.exports = {
 
             res.send(datapacks);
         })
-
-        router.get('/user', async (req, res) => {
-            const user = await Users.findById(req?.user?._id, { username: 1, image: 1, moderator: 1, _id: 0 }).lean();
-
-            user ? res.send(user) : res.sendStatus(401)
-        })
     }
 }

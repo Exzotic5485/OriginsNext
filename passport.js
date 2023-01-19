@@ -7,6 +7,16 @@ const axios = require('axios')
 
 const users = require('./models/Users')
 
+async function createUniqueUsername(username) {
+    const usernameTaken = await users.exists({ username: username })
+
+    if(!usernameTaken) return username;
+
+    const random = Math.floor(Math.random() * 1000)
+
+    return await createUniqueUsername(`${username}${random}`)
+}
+
 async function verifyLocal(username, password, done) {
     const user = await users.findOne({$or: [
         { email: username },
@@ -17,13 +27,14 @@ async function verifyLocal(username, password, done) {
         return done(null, false)
     }
 
+    if(!user.password) return done(null, false)
+
     const passwordMatches = await bycrypt.compare(password, user.password)
 
     return done(null, passwordMatches ? user : false);
 }
 
 async function verifyDiscord(accessToken, refreshToken, profile, done) {
-    return done(null, false, { error: "Email already in use." })
     
     const discordUser = await users.findOne({ discordId: profile.id })
 
@@ -34,11 +45,10 @@ async function verifyDiscord(accessToken, refreshToken, profile, done) {
     const emailUsed = await users.exists({ email: profile.email });
 
     if(emailUsed) {
-        // return done with a message that can be read on the express route "req"
-        return done(null, false, { error: "Email already in use." })
+        return done(null, false)
     }
 
-    const username = await users.exists({ username: profile.username }) ? `${profile.username}${profile.id.slice(5  )}` : profile.username
+    const username = await createUniqueUsername(profile.username)
 
     const newUser = await users.create({
         discordId: profile.id,

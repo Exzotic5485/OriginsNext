@@ -59,4 +59,28 @@ const datapackFileUpload = multer({
   }
 })
 
-module.exports = { datapackImageUpload, datapackFileUpload }
+const userImageUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, `./public/uploads/datapack/user`)
+    },
+    filename: (req, file, cb) => {
+      cb(null, req.user._id + ".png")
+    }
+  }),
+  fileFilter: (req, file, cb) => {
+    const allowedFiles = ["png", "jpg", "jpeg"]
+    const fileExtensionArr = file.originalname.split(".")
+
+    const fileExtension = fileExtensionArr[fileExtensionArr.length - 1];
+
+    if(allowedFiles.includes(fileExtension)) {
+      cb(null, true)
+    } else {
+      cb(null, false)
+    }
+  }
+})
+
+
+module.exports = { datapackImageUpload, datapackFileUpload, userImageUpload }

@@ -64,7 +64,7 @@ module.exports = {
                 fileName: file.filename, 
                 featured: true, 
                 uploaded: new Date()
-            } } })
+            }}})
 
             res.sendStatus(200);
         })

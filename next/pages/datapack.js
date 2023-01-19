@@ -1,6 +1,5 @@
-import { Card, Text, Grid, Link, Button, Col, Row, Divider, User } from "@nextui-org/react";
+import { Card, Text, Button, Row, Divider, User } from "@nextui-org/react";
 import swal from "sweetalert";
-import NextLink from "next/link";
 import axios from "axios";
 import Page from "../components/Page";
 import ReactMarkdown from "react-markdown";

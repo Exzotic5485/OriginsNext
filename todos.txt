@@ -1,0 +1,7 @@
+Discord login
+display discord profile on user page
+
+fix amount of pages buttons on datapcks page
+
+report modal
+admin page (user list, reports list)

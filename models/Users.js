@@ -18,7 +18,14 @@ const schema = new Schema({
         type: Boolean,
         default: false
     },
-    discordId: String
+    discordId: String,
+    usernameHistory: {
+        type: Array,
+        default: []
+    },
+    usernameLastChanged: {
+        type: Date
+    }
 })
 
 module.exports = model('Users', schema)

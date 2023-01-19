@@ -52,7 +52,7 @@ export default function NavbarComponent({ currentPage }) {
                 window.location.href = `/auth/logout?redirect=${window.location.pathname}`;
                 break;
             case "profile":
-                window.location.href = "/profile";
+                window.location.href = `/user/${user.username}`;
                 break;
             case "createProject":
                 window.location.href = "/datapack/new";

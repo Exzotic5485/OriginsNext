@@ -15,7 +15,7 @@ export default function Datapack({ name, description, author, imageSrc, slug, su
               <Grid style={{flex: 1}}>
                   <Card.Header css={{ flex: 1, mh: 10, mt: 10 }}>
                     <Text b size={22}>{name}</Text>
-                    <Button size="xs" color="gradient" onClick={downloadClick} css={{ ml: 'auto' }}>Download</Button>
+                    <Button size="xs" color="gradient" onClick={downloadClick} css={{ ml: 'auto' }} >Download</Button>
                   </Card.Header>
                   <Card.Body css={{pt: 0}}>
                       <Link href={`/user/${author}`}>
