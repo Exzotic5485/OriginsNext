@@ -25,6 +25,14 @@ const schema = new Schema({
     },
     usernameLastChanged: {
         type: Date
+    },
+    banned: {
+        type: Boolean,
+        default: false
+    },
+    created: {
+        type: Date,
+        default: Date.now
     }
 })
 

@@ -48,7 +48,7 @@ async function verifyDiscord(accessToken, refreshToken, profile, done) {
         return done(null, false)
     }
 
-    const username = await createUniqueUsername(profile.username)
+    const username = await createUniqueUsername(profile.username.replace(/[^a-zA-Z0-9-_]/g, ''))
 
     const newUser = await users.create({
         discordId: profile.id,

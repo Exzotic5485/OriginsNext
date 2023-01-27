@@ -1,7 +1,13 @@
-Discord login
 display discord profile on user page
 
 fix amount of pages buttons on datapcks page
 
-report modal
 admin page (user list, reports list)
+
+change email to check if exists?
+
+footer
+
+make ban / unban one route
+
+better ban way (logout / dont allow login instead of random youve been banned page)

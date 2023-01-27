@@ -29,8 +29,17 @@ function registerRoutes({ server, nextApp }, directory = __dirname, root = '') {
 function router({ nextApp, nextHandler, server }) {
     const router = Router();
 
+    router.use((req, res, next) => {
+        if(req?.user?.banned) {
+            console.log("Banned user tried to access " + req.url)
+            return nextApp.render(req, res, "/banned")
+        }
+
+        next()
+    })
+
     router.get("/", (req, res) => {
-        return nextApp.render(req, res, "/home", { user: "Test User" });
+        return nextApp.render(req, res, "/home");
     });
 
     router.get("/datapacks", async (req, res) => {

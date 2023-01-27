@@ -15,6 +15,7 @@ import UploadFileModal from "../components/modals/UploadFileModal";
 import parseVersions from "../../shared/parseVersions";
 import { TrashIcon } from "../components/icons/trash";
 import { EditIcon } from "../components/icons/edit";
+import ReportPostModal from "../components/modals/ReportPostModal";
 
 export async function getServerSideProps(context) {
     const { req } = context;
@@ -36,6 +37,7 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
     const [files, setFiles] = useState(datapack.files);
 
     const [uploadModalVisible, setUploadModalVisible] = useState(false);
+    const [reportModalVisible, setReportModalVisible] = useState(false);
 
     const handeLikeButton = (e) => {
         if (!isLoggedIn) return toast.error(`You must be logged in to like a post!`);
@@ -89,8 +91,15 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
         });
     };
 
+    const handleReport = () => {
+        if(!isLoggedIn) return toast.error(`You must be logged in to report a post!`);
+
+        setReportModalVisible(true);
+    }
+
     return (
         <Page>
+            <ReportPostModal visible={reportModalVisible} setVisible={setReportModalVisible} datapackId={datapack.id} />
             <Row css={{ justifyContent: 'center', flexWrap: 'wrap', mt: 10 }}>
             <Card css={{ height: "max-content", mw: "800px", mr: 10, mb: 10 }}>
                 <Card.Header css={{ flexDirection: "column" }}>
@@ -126,7 +135,7 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
                         <Button size={"xs"} color={liked ? "disabled" : "error"} icon={<HeartIcon width={18} />} onClick={handeLikeButton}>
                             Like
                         </Button>
-                        <Button size={"xs"} css={{ backgroundColor: "#FF6466" }} icon={<FlagIcon />}>
+                        <Button size={"xs"} css={{ backgroundColor: "#FF6466" }} icon={<FlagIcon />} onClick={handleReport}>
                             Report
                         </Button>
                     </div>
@@ -143,7 +152,7 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
                     <Divider css={{ mt: 10 }} />
                 </Card.Header>
                 <Card.Body>
-                    <Card isHoverable isPressable variant="bordered">
+                    <Card isHoverable isPressable variant="bordered" onPress={() => window.location.href = `/user/${datapack.owner.username}`}>
                         <Card.Body>
                             <User src={`/uploads/user/${datapack.owner.image}`} name={datapack.owner.username} />
                         </Card.Body>

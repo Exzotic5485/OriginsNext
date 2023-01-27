@@ -12,6 +12,8 @@ module.exports = {
     execute: ({ router, nextApp }) => {
         const downloadManager = new DownloadManger();
 
+        router.get('/', (req, res) => res.redirect('/datapacks'))
+
         router.get('/new', checkAuthenticated, async (req, res) => {
             nextApp.render(req, res, '/datapackCreate')
         })

@@ -14,7 +14,7 @@ export default function LoginModal({ visible, setVisible }) {
     const [loading, setLoading] = useState(false)
 
     const handleUsername = (e) => {
-        const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '');
+        const value = e.target.value.replace(/[^a-zA-Z0-9-_]/g, '');
 
         if(value.length > 25) return toast.error('Username must be less than 25 characters!')
 

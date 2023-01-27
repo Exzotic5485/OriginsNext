@@ -1,5 +1,6 @@
 const Datapacks = require('../../models/Datapacks')
 const Users = require('../../models/Users')
+const Reports = require('../../models/Reports')
 
 const fs = require('fs')
 
@@ -134,6 +135,30 @@ module.exports = {
                 res.sendStatus(200);
             } catch (e) {
                 console.log(e)
+                res.sendStatus(500);
+            }
+        })
+
+        router.post('/:id/report', checkAuthenticated, async (req, res) => {
+            try {
+                const { id } = req.params;
+                const { reason, description } = req.body;
+    
+                if(!reason || !description) return res.sendStatus(400);
+    
+                const datapack = await Datapacks.findByIdOrSlug(id);
+    
+                if(!datapack) return res.sendStatus(404);
+    
+                await Reports.create({
+                    reporter: req.user._id,
+                    datapack: datapack._id,
+                    reason,
+                    description
+                })
+    
+                res.send({ success: true });
+            } catch(e) {
                 res.sendStatus(500);
             }
         })

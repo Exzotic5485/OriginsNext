@@ -28,8 +28,8 @@ module.exports = {
             if(username && username !== user.username) {
                 if(await Users.exists({ username: { $regex: username, $options: 'i' } })) return res.send({ error: "Username already taken!" })
 
+                user.usernameHistory.push(user.username);
                 user.username = username;
-                
             }
 
             if(email && email !== user.email) {

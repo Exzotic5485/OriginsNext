@@ -1,6 +1,7 @@
 import { Avatar, Badge, Button, Card, Col, Divider, Row, Text } from "@nextui-org/react";
 import { useState } from "react";
 import Datapack from "../components/Datapack";
+import ModUserActionsDropdown from "../components/dropdowns/ModUserActionsDropdown";
 import { DownloadIcon } from "../components/icons/download";
 import { EditIcon } from "../components/icons/edit";
 import { HeartIcon } from "../components/icons/heart";
@@ -8,15 +9,15 @@ import EditUserModal from "../components/modals/EditUserModal";
 import Page from "../components/Page";
 
 export async function getServerSideProps(context) {
-    console.log(context.query.user);
     return {
         props: {
             user: context.query.user || null,
+            isModerator: context?.req?.user?.moderator ? true : false,
         },
     };
 }
 
-export default function UserPage({ user }) {
+export default function UserPage({ user, isModerator }) {
     const [editModalVisible, setEditModalVisible] = useState(false);
 
     return (
@@ -30,16 +31,27 @@ export default function UserPage({ user }) {
                                 <Text h3 css={{ ml: 10 }}>
                                     {user.username}
                                 </Text>
-                                {user.isUser && (
+                                {user.isUser ? (
                                     <>
                                         <Button flat size="xs" css={{ ml: "auto" }} icon={<EditIcon />} onClick={() => setEditModalVisible(true)}>
                                             Edit
                                         </Button>
                                         <EditUserModal visible={editModalVisible} setVisible={setEditModalVisible} user={user} />
                                     </>
+                                ) : (
+                                    isModerator && (
+                                        <>
+                                            <ModUserActionsDropdown css={{ ml: "auto" }} userIsBanned={user?.banned} setEditModalVisible={setEditModalVisible} />
+                                            <EditUserModal visible={editModalVisible} setVisible={setEditModalVisible} user={user} />
+                                        </>
+                                    )
                                 )}
                             </Row>
-                            { user.moderator && <Badge variant="flat" color='success' borderWeight={0}>Moderator</Badge> }
+                            {user.moderator && (
+                                <Badge variant="flat" color="success" borderWeight={0}>
+                                    Moderator
+                                </Badge>
+                            )}
                             <Divider css={user.moderator && { mt: 5 }} />
                             <Row justify="center" css={{ mt: 10 }}>
                                 <HeartIcon height={30} width={40} />
