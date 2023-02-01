@@ -1,3 +1,5 @@
+const Datapacks = require('../../models/Datapacks')
+const Reports = require('../../models/Reports')
 const Users = require('../../models/Users')
 const { checkIsModerator } = require('../../utils/auth')
 
@@ -55,6 +57,40 @@ module.exports = {
                 await user.save()
 
                 res.send({ success: true })
+            } catch(e) {
+                res.sendStatus(500)
+            }
+        })
+
+        router.get('/reports', async (req, res) => {
+            const reports = await Reports.find(req.query.showResolved === "true" ? {} : { resolved: false }, { __v: 0 }).lean();
+
+            for(const report of reports) {
+                report.id = report._id.toString()
+                delete report._id
+
+                report.datapack = await Datapacks.findById(report.datapack, { slug: 1, title: 1 }).lean();
+                report.reporter = await Users.findById(report.reporter, { username: 1}).lean();
+
+                report.datapack.id = report.datapack._id.toString()
+                delete report.datapack._id
+
+                report.reporter.id = report.reporter._id.toString()
+                delete report.reporter._id
+
+                report.created = report.created.toISOString()
+            }
+
+            res.send(reports)
+        })
+
+        router.post('/report/:id/resolve', async (req, res) => {
+            try {
+                const { id } = req.params;
+
+                await Reports.findByIdAndUpdate(id, { resolved: true })
+    
+                res.sendStatus(200)
             } catch(e) {
                 res.sendStatus(500)
             }

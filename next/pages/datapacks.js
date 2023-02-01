@@ -28,6 +28,7 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
     const [page, setPage] = useState(currentPage);
     const [selectedFilters, setSelectedFilters] = useState(currentFilters.length > 0 ? currentFilters.split(",") : []);
     const [datapacks, setDatapacks] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
     const [search, setSearch] = useState("");
     const [sort, setSort] = useState(new Set(["downloads"]));
 
@@ -52,11 +53,13 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
         axios
             .get(`/api/datapacks?page=${page}&filters=${selectedFilters.join(",")}&search=${search}&sort=${Array.from(sort)[0]}`)
             .then((res) => {
-                setDatapacks(res.data);
+                setDatapacks(res.data.datapacks);
+                setTotalPages(res.data.totalPages);
             })
             .catch((e) => {
                 console.log(e);
                 setDatapacks([]);
+                setTotalPages(1);
 
                 toast.error(`Error fetching datapacks! Please try again.`, { duration: 3000, style: { backgroundColor: "#FF6466", color: "#FFFFFF", style: { zIndex: 1000 } } });
             });
@@ -91,7 +94,7 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
                 </Grid>
             </Grid.Container>
             <Row justify="center">
-                <Pagination rounded page={page} total={10} initialPage={page} onChange={handlePageChange} />
+                <Pagination rounded page={page} total={totalPages} initialPage={page} onChange={handlePageChange} />
             </Row>
         </Page>
     );

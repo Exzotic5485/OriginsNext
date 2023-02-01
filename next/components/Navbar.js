@@ -25,7 +25,7 @@ export default function NavbarComponent({ currentPage }) {
                 if (e.response.status == 401) {
                     setUser(false);
                 } else {
-                    toast.error("An error occurred while fetching user data.")
+                    toast.error("An error occurred while fetching user data.");
                 }
             });
     }, [loginModalVisible]);
@@ -33,18 +33,17 @@ export default function NavbarComponent({ currentPage }) {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
 
-        if(urlParams.get("loginError")) {
-            toast.error("An error occurred while logging in with discord.")
+        if (urlParams.get("loginError")) {
+            toast.error("An error occurred while logging in with discord.");
 
             window.history.replaceState({}, document.title, window.location.pathname);
-            setLoginModalVisible(true)
+            setLoginModalVisible(true);
         }
-    }, [])
+    }, []);
 
     const isActive = (page) => {
         return currentPage == page;
     };
-
 
     const dropdownAction = (key) => {
         switch (key) {
@@ -57,6 +56,10 @@ export default function NavbarComponent({ currentPage }) {
             case "createProject":
                 window.location.href = "/datapack/new";
                 break;
+            case "dashboard":
+                window.location.href = "/admin/users";
+                break;
+
         }
     };
 
@@ -90,6 +93,11 @@ export default function NavbarComponent({ currentPage }) {
                                     <Dropdown.Item withDivider key="createProject">
                                         <Text>Create Project</Text>
                                     </Dropdown.Item>
+                                    {user.moderator && (
+                                        <Dropdown.Item key="dashboard">
+                                            <Text>Moderation Dashboard</Text>
+                                        </Dropdown.Item>
+                                    )}
                                     <Dropdown.Item key="logout" color="error" withDivider>
                                         Logout
                                     </Dropdown.Item>

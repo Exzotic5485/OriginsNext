@@ -37,7 +37,11 @@ module.exports = {
                 console.log(datapack.owner)
             }
 
-            res.send(datapacks);
+            const totalPages = Math.ceil((await Datapacks.countDocuments(query)) / limit);
+
+
+
+            res.send({ datapacks, totalPages });
         })
     }
 }
