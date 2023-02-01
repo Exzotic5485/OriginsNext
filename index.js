@@ -36,7 +36,7 @@ server.use('/', require('./routes/index')({ nextApp, nextHandler, server }))
 
 nextApp.prepare().then(() => {
     mongoose.connect(process.env.MONGODB_URI).then(() => {
-        server.listen(80, () => {
+        server.listen(process.env.PORT, () => {
             console.log(`Listening on http://localhost`)
         })
     })
