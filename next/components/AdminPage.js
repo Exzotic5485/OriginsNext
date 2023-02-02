@@ -18,10 +18,10 @@ export default function AdminPage({ children, currentPage }) {
                         </Col>
                     </Card.Header>
                     <Card.Body css={{ gap: 10 }}>
-                        <Button flat={!isCurrentPage("users")} bordered={isCurrentPage("users")} onClick={() => window.location.href = "/admin/users"} size="lg">
+                        <Button light={!isCurrentPage("users")} flat={isCurrentPage("users")} onClick={() => window.location.href = "/admin/users"} size="lg">
                             Users
                         </Button>
-                        <Button flat={!isCurrentPage("reports")} bordered={isCurrentPage("reports")} onClick={() => window.location.href = "/admin/reports"} size="lg">
+                        <Button light={!isCurrentPage("reports")} flat={isCurrentPage("reports")} onClick={() => window.location.href = "/admin/reports"} size="lg">
                             Reports
                         </Button>
                     </Card.Body>

@@ -88,7 +88,8 @@ module.exports = {
             try {
                 const { id } = req.params;
 
-                await Reports.findByIdAndUpdate(id, { resolved: true })
+                // update report to !resolved
+                await Reports.findByIdAndUpdate(id, { resolved: req.query.undo == "true" ? false : true })
     
                 res.sendStatus(200)
             } catch(e) {

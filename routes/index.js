@@ -48,7 +48,7 @@ function router({ nextApp, nextHandler, server }) {
     });
 
     router.get("/user/:username", async (req, res) => {
-        const user = await Users.findOne({ username: { $regex: `^${req.params.username}$`, $options: 'i' } }, { password: 0, __v: 0 }).lean();
+        const user = await Users.findOne({ username: { $regex: `^${req.params.username}$`, $options: 'i' } }, { password: 0, __v: 0, created: 0 }).lean();
 
         if(!user) return res.sendStatus(404)
 
@@ -79,6 +79,9 @@ function router({ nextApp, nextHandler, server }) {
     router.get('/admin', checkIsModerator, (req, res) => {
 
     })
+
+    router.get('/tos', (req, res) => nextApp.render(req, res, '/tos'))
+    router.get('/privacy', (req, res) => nextApp.render(req, res, '/privacy'))
 
     registerRoutes({ nextApp, server })
 

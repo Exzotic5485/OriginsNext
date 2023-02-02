@@ -2,22 +2,23 @@ import { Modal, Button, Text, Divider, Link } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { CheckIcon } from "../icons/check";
+import { UndoIcon } from "../icons/undo";
 
-export default function ReportDetailsModal({ info, setInfo, reports, setReports }) {
+export default function ReportDetailsModal({ info, setInfo, refreshReports }) {
     if (!info.report) return null;
 
     const handleResolve = () => {
         axios
-            .post(`/api/admin/report/${info.report.id}/resolve`)
+            .post(`/api/admin/report/${info.report.id}/resolve?undo=${info.report.resolved}`)
             .then(() => {
                 toast.success("Successfully updated report");
                 setInfo({ open: false, report: null });
-                setReports((reports) => reports.filter((report) => report.id !== info.report.id));
+                refreshReports();
             })
             .catch((err) => {
                 toast.error("Error updating report!");
             });
-    }
+    };
 
     return (
         <Modal css={{ zIndex: 0 }} closeButton blur open={info.open} onClose={() => setInfo({ open: false, report: null })}>
@@ -44,8 +45,8 @@ export default function ReportDetailsModal({ info, setInfo, reports, setReports 
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button auto color="success" icon={<CheckIcon />} onClick={handleResolve}>
-                    Resolve
+                <Button auto color="error" icon={info.report.resolved ? <UndoIcon /> : <CheckIcon />} onClick={handleResolve}>
+                    {info.report.resolved ? "UnResolve" : "Resolve"}
                 </Button>
             </Modal.Footer>
         </Modal>

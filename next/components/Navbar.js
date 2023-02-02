@@ -67,7 +67,7 @@ export default function NavbarComponent({ currentPage }) {
         <Navbar isBordered variant="static">
             <Navbar.Brand>
                 <Image src="/img/logo.png" showSkeleton={false} height={36} width={36} />
-                <Text b>Site</Text>
+                <Text b>Origins Datapacks</Text>
             </Navbar.Brand>
             <Navbar.Content activeColor="primary" variant="underline-rounded">
                 <Navbar.Link isActive={isActive("home")} href="/">

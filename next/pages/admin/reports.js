@@ -23,7 +23,7 @@ export default function AdminPageReports({ initialReports }) {
     const [reports, setReports] = useState(initialReports);
     const [showResolved, setShowResolved] = useState(false);
 
-    useEffect(() => {
+    const refreshReports = () => {
         axios
             .get("/api/admin/reports?showResolved=" + showResolved)
             .then((res) => {
@@ -32,7 +32,9 @@ export default function AdminPageReports({ initialReports }) {
             .catch((err) => {
                 console.log(err);
             });
-    }, [showResolved]);
+    };
+
+    useEffect(() => refreshReports(), [showResolved]);
 
     return (
         <AdminPage currentPage="reports">
@@ -59,7 +61,7 @@ export default function AdminPageReports({ initialReports }) {
                             {reports.map((report) => (
                                 <Table.Row key={report.id}>
                                     <Table.Cell>
-                                        <Link href={`/datapack/${report.datapack.slug}`}>{report.datapack.title}</Link>
+                                        <Link color={report.resolved ? "text" : "default"} href={`/datapack/${report.datapack.slug}`}>{report.datapack.title}</Link>
                                     </Table.Cell>
                                     <Table.Cell>{report.reason}</Table.Cell>
                                     <Table.Cell>
@@ -79,7 +81,7 @@ export default function AdminPageReports({ initialReports }) {
                     </Table>
                 </Card.Body>
             </Card>
-            <ReportDetailsModal info={reportDetailsModal} setInfo={setReportDetailsModal} reports={reports} setReports={setReports} />
+            <ReportDetailsModal info={reportDetailsModal} setInfo={setReportDetailsModal} refreshReports={refreshReports} />
         </AdminPage>
     );
 }

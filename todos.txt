@@ -1,10 +1,6 @@
-display discord profile on user page
+display discord profile on user pages
 
-fix amount of pages buttons on datapcks page
-
-admin page (user list, reports list)
-
-change email to check if exists?
+add ability to link discord account after already created (account settings page)
 
 footer
 
