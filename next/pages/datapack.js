@@ -9,7 +9,6 @@ import { DownloadIcon } from "../components/icons/download";
 import { FlagIcon } from "../components/icons/flag";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
-import { UploadIcon } from "../components/icons/upload";
 import UploadFileModal from "../components/modals/UploadFileModal";
 
 import parseVersions from "../../shared/parseVersions";

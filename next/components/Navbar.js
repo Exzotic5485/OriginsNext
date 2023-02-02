@@ -1,7 +1,6 @@
-import { Image, Navbar, Switch, Text, useTheme, Button, Row, Dropdown, Avatar } from "@nextui-org/react";
+import { Image, Navbar, Text, Button, Row, Dropdown, Avatar } from "@nextui-org/react";
 import axios from "axios";
-import { useTheme as useNextTheme } from "next-themes";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";

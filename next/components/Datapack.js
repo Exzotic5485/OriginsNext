@@ -1,4 +1,4 @@
-import { Button, Card, Grid, Text, Col, Link, Row } from '@nextui-org/react'
+import { Button, Card, Grid, Text, Link, Row } from '@nextui-org/react'
 import { DownloadIcon } from './icons/download';
 
 export default function Datapack({ name, downloads, author, imageSrc, slug, summary }) {

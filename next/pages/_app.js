@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Head from "next/head";
 
 import { SSRProvider } from "@react-aria/ssr";
@@ -6,8 +5,6 @@ import { SSRProvider } from "@react-aria/ssr";
 import { NextUIProvider, createTheme } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
-
-import { UserContext } from "../utils/context/User";
 
 const lightTheme = createTheme({
     type: "light",
