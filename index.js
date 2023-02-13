@@ -7,7 +7,7 @@ const passport = require('passport')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
-const nextApp = next({ dev: process.env.NODE_ENV != 'production', dir: 'next' })
+const nextApp = next({ dev: process.env.DEV == 'true', dir: 'next' })
 const nextHandler = nextApp.getRequestHandler();
 
 const server = express();
