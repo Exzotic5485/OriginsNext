@@ -25,9 +25,7 @@ module.exports = {
             const searchTerm = req.query.search || "";
             const sort = req.query.sort || "downloads";
 
-            console.log(req.query.search)
-
-            const query = filters.length > 0 ? { $and: [ { tags: { $all: filters } }, { tags: { $exists: true } }, { title: { $regex: `.*${searchTerm}.*`, $options: 'i' } } ]} : {title: { $regex: `.*${searchTerm}.*`, $options: 'i' }}
+            const query = filters.length > 0 ? { $and: [ { tags: { $all: filters } }, { tags: { $exists: true } }, { title: { $regex: `.*${searchTerm}.*`, $options: 'i' } }, { deleted: false } ]} : {title: { $regex: `.*${searchTerm}.*`, $options: 'i' }, deleted: false }
     
             const datapacks = await Datapacks.find(query, { _v: 0 }).skip(pageNumber == 1 ? 0 : (pageNumber * limit) - limit).limit(limit).lean().sort({ [sort]: -1 });
 
@@ -38,8 +36,6 @@ module.exports = {
             }
 
             const totalPages = Math.ceil((await Datapacks.countDocuments(query)) / limit);
-
-
 
             res.send({ datapacks, totalPages });
         })

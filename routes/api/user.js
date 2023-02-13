@@ -9,7 +9,7 @@ module.exports = {
     route: '/user',
     execute: ({ router, nextApp }) => {
         router.get('/', async (req, res) => {
-            const user = await Users.findById(req?.user?._id, { username: 1, image: 1, moderator: 1, _id: 0 }).lean();
+            const user = await Users.findById(req?.user?._id, { username: 1, image: 1, moderator: 1, notifications: 1, _id: 0 }).lean();
 
             user ? res.send(user) : res.sendStatus(401)
         })
@@ -43,6 +43,20 @@ module.exports = {
             await user.save();
 
             res.send({ success: true })
+        })
+
+        router.post('/notifications/read', checkCanManageProfile, async (req, res) => {
+            try {
+                const notificationId = req.body.id;
+
+                console.log(notificationId)
+    
+                await Users.updateOne({ _id: req.user._id }, { $pull: { notifications: { _id: notificationId } } });
+    
+                res.send({ success: true })
+            } catch (e) {
+                res.sendStatus(500)
+            }
         })
     }
 }

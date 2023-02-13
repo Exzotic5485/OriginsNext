@@ -61,7 +61,7 @@ export default function AdminPageReports({ initialReports }) {
                             {reports.map((report) => (
                                 <Table.Row key={report.id}>
                                     <Table.Cell>
-                                        <Link color={report.resolved ? "text" : "default"} href={`/datapack/${report.datapack.slug}`}>{report.datapack.title}</Link>
+                                        <Link color={report.resolved ? "error" : "success"} href={`/datapack/${report.datapack.slug}`}>{report.datapack.title}</Link>
                                     </Table.Cell>
                                     <Table.Cell>{report.reason}</Table.Cell>
                                     <Table.Cell>

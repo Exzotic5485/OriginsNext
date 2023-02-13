@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, Types } = require('mongoose')
 
 const schema = new Schema({
     email: {
@@ -33,6 +33,16 @@ const schema = new Schema({
     created: {
         type: Date,
         default: Date.now
+    },
+    notifications: {
+        type: Array,
+        of: {
+            title: String,
+            message: String,
+            link: String,
+            color: String
+        },
+        default: []
     }
 })
 

@@ -7,3 +7,5 @@ footer
 make ban / unban one route
 
 better ban way (logout / dont allow login instead of random youve been banned page)
+
+notifications (follow datapacks, users etc)

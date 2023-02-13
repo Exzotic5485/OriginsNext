@@ -76,7 +76,9 @@ export default function UserPage({ user, isModerator }) {
                     </Card>
                     <br />
                     {user.datapacks.map((datapack) => {
-                        return <Datapack name={datapack.title} imageSrc={`/uploads/datapack/${datapack.image}`} slug={datapack.slug} author={user.username} summary={datapack.summary} key={datapack.slug} />;
+                        if(datapack.deleted && (!user.isUser || !isModerator)) return;
+
+                        return <Datapack name={datapack.title} imageSrc={`/uploads/datapack/${datapack.image}`} slug={datapack.slug} author={user.username} summary={datapack.summary} deleted={datapack?.deleted} key={datapack.slug} />;
                     })}
                 </Col>
             </Row>

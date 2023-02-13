@@ -48,4 +48,19 @@ function checkIsModerator(req, res, next) {
     next()
 }
 
-module.exports = { checkNotAuthenticated, checkAuthenticated, checkCanManageDatapack, checkCanManageProfile, checkIsModerator }
+function checkNotDeleted(req, res, next) {
+    const idOrSlug = req.params.id;
+
+    Datapacks.findByIdOrSlug(idOrSlug).then((result) => {
+        if(!result) {
+            return res.sendStatus(404)
+        }
+
+        if(!result.deleted || req?.user?.moderator) return next();
+        res.sendStatus(404)
+    }).catch(e => {
+        res.sendStatus(404)
+    })
+}
+
+module.exports = { checkNotAuthenticated, checkAuthenticated, checkCanManageDatapack, checkCanManageProfile, checkIsModerator, checkNotDeleted }

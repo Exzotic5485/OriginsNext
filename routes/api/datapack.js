@@ -6,7 +6,7 @@ const fs = require('fs')
 
 const { isValidObjectId, Types: { ObjectId } } = require('mongoose')
 
-const { checkAuthenticated, checkCanManageDatapack } = require('../../utils/auth')
+const { checkAuthenticated, checkCanManageDatapack, checkNotDeleted } = require('../../utils/auth')
 
 const { datapackImageUpload, datapackFileUpload }= require('../../utils/multer')
 
@@ -125,12 +125,12 @@ module.exports = {
                 const datapack = await Datapacks.findByIdOrSlug(req.params.id);
 
                 if(!datapack) return res.sendStatus(404);
-    
-                if(datapack.image != "default.png") fs.unlinkSync(`./public/uploads/datapack/${datapack.image}`)
-    
-                if(datapack.files.length > 0) fs.rmSync(`./public/uploads/files/${datapack._id}`, { recursive: true })
-    
-                await Datapacks.deleteOne({ _id: datapack._id })
+
+                if(datapack.deleted) {
+                    await datapack.unDelete()
+                } else {
+                    await datapack.softDelete();
+                }
     
                 res.sendStatus(200);
             } catch (e) {

@@ -1,7 +1,9 @@
 import { Modal, Button, Text, Divider, Link } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import swal from "sweetalert";
 import { CheckIcon } from "../icons/check";
+import { TrashIcon } from "../icons/trash";
 import { UndoIcon } from "../icons/undo";
 
 export default function ReportDetailsModal({ info, setInfo, refreshReports }) {
@@ -18,6 +20,27 @@ export default function ReportDetailsModal({ info, setInfo, refreshReports }) {
             .catch((err) => {
                 toast.error("Error updating report!");
             });
+    };
+
+    const handleDelete = () => {
+        swal({
+            title: "Are you sure?",
+            text: `You are trying to delete the datapack: "${info.report.datapack.title}"!`,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((value) => {
+            if (value) {
+                axios
+                    .post(`/api/admin/report/${info.report.id}/action`)
+                    .then((res) => {
+                        toast.success(`Successfully deleted and notified!`);
+                    })
+                    .catch((e) => {
+                        toast.error(`Failed to delete datapack!`);
+                    });
+            }
+        });
     };
 
     return (
@@ -44,8 +67,11 @@ export default function ReportDetailsModal({ info, setInfo, refreshReports }) {
                     Description: <Text>{info.report.description}</Text>
                 </Text>
             </Modal.Body>
-            <Modal.Footer>
-                <Button auto color="error" icon={info.report.resolved ? <UndoIcon /> : <CheckIcon />} onClick={handleResolve}>
+            <Modal.Footer justify="space-between">
+                <Button auto bordered color="error" icon={<TrashIcon />} onClick={handleDelete}>
+                    Delete Pack & Notify
+                </Button>
+                <Button auto bordered color="success" icon={info.report.resolved ? <UndoIcon /> : <CheckIcon />} onClick={handleResolve}>
                     {info.report.resolved ? "UnResolve" : "Resolve"}
                 </Button>
             </Modal.Footer>

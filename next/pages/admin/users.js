@@ -6,6 +6,8 @@ import AdminPage from "../../components/AdminPage";
 import { BanIcon } from "../../components/icons/ban";
 import { EyeIcon } from "../../components/icons/eye";
 import SearchIcon from "../../components/icons/search";
+import SendIcon from "../../components/icons/send";
+import NotifyUserModal from "../../components/modals/NotifyUserModal";
 import UserDetailsModal from "../../components/modals/UserDetailsModal";
 import { IconButton } from "../../components/styled/IconButton";
 
@@ -32,6 +34,7 @@ export default function AdminPageUsers({}) {
     const [searchValue, setSearchValue] = useState("");
 
     const [userDetailsModal, setUserDetailsModal] = useState({ open: false, user: null });
+    const [notifyUserModalDetails, setNotifyUserModalDetails] = useState({ open: false, user: null });
 
     const [users, setUsers] = useState([]);
 
@@ -45,7 +48,7 @@ export default function AdminPageUsers({}) {
         axios
             .get(`/api/admin/users?search=${searchValue}`)
             .then((res) => {
-                const newArr = res.data.map((user) => ({ ...user, email: `${user.username}@hidden.com`}))
+                const newArr = res.data.map((user) => ({ ...user, email: `${user.username}@hidden.com` }));
                 setUsers(newArr);
             })
             .catch((err) => {
@@ -124,6 +127,13 @@ export default function AdminPageUsers({}) {
                                     <Table.Cell>
                                         <Row justify="center" align="center">
                                             <Col css={{ d: "flex" }}>
+                                                <Tooltip content="Notify">
+                                                    <IconButton onClick={() => setNotifyUserModalDetails({ open: true, user: { id: user.id, username: user.username } })}>
+                                                        <SendIcon size={20} fill="#979797" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Col>
+                                            <Col css={{ d: "flex" }}>
                                                 <Tooltip content="User Details">
                                                     <IconButton onClick={() => setUserDetailsModal({ open: true, user })}>
                                                         <EyeIcon size={20} fill="#979797" />
@@ -155,6 +165,7 @@ export default function AdminPageUsers({}) {
                 </Card.Body>
             </Card>
             <UserDetailsModal info={userDetailsModal} setInfo={setUserDetailsModal} />
+            <NotifyUserModal info={notifyUserModalDetails} setInfo={setNotifyUserModalDetails} />
         </AdminPage>
     );
 }

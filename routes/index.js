@@ -55,7 +55,7 @@ function router({ nextApp, nextHandler, server }) {
         user.id = user._id.toString();
         delete(user._id)
 
-        const datapacks = await Datapacks.find({ owner: user.id }, { title: 1, summary: 1, slug: 1, image: 1, _id: 0 }).lean() || [];
+        const datapacks = await Datapacks.find({ owner: user.id }, { title: 1, summary: 1, slug: 1, image: 1, deleted: 1, _id: 0 }).lean() || [];
 
         user.datapacks = datapacks
 

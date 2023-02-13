@@ -1,9 +1,10 @@
-import { Image, Navbar, Text, Button, Row, Dropdown, Avatar } from "@nextui-org/react";
+import { Image, Navbar, Text, Button, Row, Dropdown, Avatar, Badge } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { CheckmarkIcon, toast } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { NotificationIcon } from "./icons/notification";
 
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
@@ -58,9 +59,27 @@ export default function NavbarComponent({ currentPage }) {
             case "dashboard":
                 window.location.href = "/admin/users";
                 break;
-
         }
     };
+
+    const notificationsAction = (key) => {
+        const notification = user.notifications[key];
+
+        if(!notification) return;
+
+        console.log(notification);
+
+        axios.post("/api/user/notifications/read", { id: notification._id }).then(() => {
+            const newNotifications = [...user.notifications];
+            newNotifications.splice(key, 1);
+
+            setUser({ ...user, notifications: newNotifications });
+
+            if(notification.link) window.href.location = notification.link;
+        }).catch(() => {
+            toast.error("An error occurred while marking notification as read.");
+        })
+    }
 
     return (
         <Navbar isBordered variant="static">
@@ -81,27 +100,69 @@ export default function NavbarComponent({ currentPage }) {
                 <Row>
                     {user !== undefined ? (
                         user ? (
-                            <Dropdown placement="top-right">
-                                <Dropdown.Trigger>
-                                    <Avatar bordered={user.moderator} color={user.moderator ? "gradient" : "default"} size="md" src={`/uploads/user/${user.image}`} />
-                                </Dropdown.Trigger>
-                                <Dropdown.Menu onAction={dropdownAction}>
-                                    <Dropdown.Item key="profile">
-                                        <Text b>@{user.username}</Text>
-                                    </Dropdown.Item>
-                                    <Dropdown.Item withDivider key="createProject">
-                                        <Text>Create Project</Text>
-                                    </Dropdown.Item>
-                                    {user.moderator && (
-                                        <Dropdown.Item key="dashboard">
-                                            <Text>Moderation Dashboard</Text>
+                            <Row css={{ gap: 10 }}>
+                                <Dropdown placement="top-right">
+                                    <Dropdown.Trigger>
+                                        <Navbar.Item>
+                                            <Badge isInvisible={user.notifications.length == 0} disableOutline content={user.notifications.length} size="xs" color="error">
+                                                <NotificationIcon height={32} />
+                                            </Badge>
+                                        </Navbar.Item>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Menu onAction={notificationsAction}
+                                        css={{
+                                            $$dropdownMenuWidth: "340px",
+                                            $$dropdownItemHeight: "70px",
+                                            "& .nextui-dropdown-item": {
+                                                py: "$4",
+                                                svg: {
+                                                    color: "$secondary",
+                                                    mr: "$4",
+                                                },
+                                                "& .nextui-dropdown-item-content": {
+                                                    w: "100%",
+                                                    fontWeight: "$semibold",
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <Dropdown.Section title="Notifications">
+                                            {user.notifications.length > 0 ? (
+                                                user.notifications.map((notification, index) => (
+                                                    <Dropdown.Item color={notification.color || "default"} key={index} showFullDescription description={notification.message}>
+                                                        {notification.title}
+                                                    </Dropdown.Item>
+                                                ))
+                                            ) : (
+                                                <Dropdown.Item>
+                                                    <Text>No new notifications!</Text>
+                                                </Dropdown.Item>
+                                            )}
+                                        </Dropdown.Section>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <Dropdown placement="top-right">
+                                    <Dropdown.Trigger>
+                                        <Avatar bordered={user.moderator} color={user.moderator ? "gradient" : "default"} size="md" src={`/uploads/user/${user.image}`} />
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Menu onAction={dropdownAction}>
+                                        <Dropdown.Item key="profile">
+                                            <Text b>@{user.username}</Text>
                                         </Dropdown.Item>
-                                    )}
-                                    <Dropdown.Item key="logout" color="error" withDivider>
-                                        Logout
-                                    </Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
+                                        <Dropdown.Item withDivider key="createProject">
+                                            <Text>Create Project</Text>
+                                        </Dropdown.Item>
+                                        {user.moderator && (
+                                            <Dropdown.Item key="dashboard">
+                                                <Text>Moderation Dashboard</Text>
+                                            </Dropdown.Item>
+                                        )}
+                                        <Dropdown.Item key="logout" color="error" withDivider>
+                                            Logout
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Row>
                         ) : (
                             <>
                                 <Button auto flat onClick={() => setLoginModalVisible(true)}>

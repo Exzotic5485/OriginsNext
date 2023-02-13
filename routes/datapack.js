@@ -1,6 +1,6 @@
 const Datapacks = require('../models/Datapacks')
 
-const { checkAuthenticated, checkCanManageDatapack } = require('../utils/auth')
+const { checkAuthenticated, checkCanManageDatapack, checkNotDeleted } = require('../utils/auth')
 
 const { isValidObjectId, Types: { ObjectId } } = require('mongoose')
 const Users = require('../models/Users')
@@ -18,7 +18,7 @@ module.exports = {
             nextApp.render(req, res, '/datapackCreate')
         })
 
-        router.get('/:id/download', async (req, res) => {
+        router.get('/:id/download', checkNotDeleted, async (req, res) => {
             const datapack = await Datapacks.findByIdOrSlug(req.params.id);
 
             if(!datapack) return res.sendStatus(404);
@@ -64,11 +64,11 @@ module.exports = {
             nextApp.render(req, res, '/datapackEdit', { datapack })
         })
         
-        router.get('/:id', async (req, res) => {
+        router.get('/:id', checkNotDeleted, async (req, res) => {
             const idOrSlug = req.params.id
 
             try {
-                const datapack = await Datapacks.findOne(isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug }).lean();
+                const datapack = await Datapacks.findOne(isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug }, { deletedAt: 0 }).lean();
 
                 if(!datapack) return res.sendStatus(404)
 

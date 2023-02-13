@@ -51,11 +51,30 @@ const schema = new Schema({
         ],
         default: []
     },
-    created: Date
+    created: Date,
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: Date,
 }, {
     statics: {
         findByIdOrSlug(idOrSlug, projection = {}) {
             return this.findOne(isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug }, projection)
+        }
+    },
+    methods: {
+        softDelete() {
+            this.deleted = true
+            this.deletedAt = Date.now()
+            
+            return this.save()
+        },
+        unDelete() {
+            this.deleted = false
+            this.deletedAt = null
+            
+            return this.save()
         }
     }
 })

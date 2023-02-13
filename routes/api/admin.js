@@ -62,6 +62,16 @@ module.exports = {
             }
         })
 
+        router.post('/user/:id/notify', async (req, res) => {
+            try {
+                await Users.findByIdAndUpdate(req.params.id, { $push: { notifications: { title: req?.body?.title, message: req.body?.message, color: req.body?.color, link: req.body?.link } } })
+
+                res.send({ success: true })
+            } catch(e) {
+                res.sendStatus(500)
+            }
+        })
+
         router.get('/reports', async (req, res) => {
             const reports = await Reports.find(req.query.showResolved === "true" ? {} : { resolved: false }, { __v: 0 }).lean();
 
@@ -88,11 +98,33 @@ module.exports = {
             try {
                 const { id } = req.params;
 
-                // update report to !resolved
                 await Reports.findByIdAndUpdate(id, { resolved: req.query.undo == "true" ? false : true })
     
                 res.sendStatus(200)
             } catch(e) {
+                res.sendStatus(500)
+            }
+        })
+
+        router.post('/report/:id/action', async (req, res) => {
+            try {
+                const { id } = req.params;
+
+                const report = await Reports.findById(id)
+
+                if(!report) return res.sendStatus(404)
+
+                const datapack = await Datapacks.findById(report.datapack)  
+
+                if(!datapack) return res.sendStatus(404)
+
+                await datapack.softDelete();
+
+                await Users.findByIdAndUpdate(report.reporter, { $push: { notifications: { title: "Datapack Deleted", message: `Your report on ${datapack.title} has been resolved. The datapack has been deleted.`, color: "success" }}})
+                await Users.findByIdAndUpdate(datapack.owner, { $push: { notifications: { title: "Datapack Deleted", message: `Your datapack ${datapack.title} has been deleted by the moderation team. Please follow our content guidelines!`, color: "error" }}})
+
+                res.sendStatus(200)
+            } catch (e) {
                 res.sendStatus(500)
             }
         })

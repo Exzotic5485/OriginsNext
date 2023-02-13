@@ -39,5 +39,7 @@ nextApp.prepare().then(() => {
         server.listen(process.env.PORT, () => {
             console.log(`Listening on http://localhost`)
         })
+
+        require('./utils/cron')();
     })
 })
