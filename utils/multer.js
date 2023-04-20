@@ -62,7 +62,7 @@ const datapackFileUpload = multer({
 const userImageUpload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, `./public/uploads/datapack/user`)
+      cb(null, `./public/uploads/user`)
     },
     filename: (req, file, cb) => {
       cb(null, req.user._id + ".png")
