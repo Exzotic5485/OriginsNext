@@ -27,8 +27,6 @@ module.exports = {
 
                 if(await Datapacks.exists({ slug: slug.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase() })) return res.send({ error: "Slug already taken!" })
 
-                console.log(req.body)
-
                 const datapack = await Datapacks.create({
                     _id: req.generatedId,
                     title,
@@ -40,8 +38,6 @@ module.exports = {
                     image: req.file ? req.file.filename : "default.png",
                     created: new Date()
                 })
-
-                console.log(datapack)
     
                 res.sendStatus(200);
             } catch(e) {
@@ -73,8 +69,6 @@ module.exports = {
         router.post('/:id/edit', checkAuthenticated, checkCanManageDatapack, datapackImageUpload.single('image'), async (req, res) => {
             const id = req.params.id;
 
-            console.log(req.body)
-
             const { title, description, summary, tags } = req.body;
 
             await Datapacks.updateOne({ _id: id }, { $set: { title, description, summary, tags: JSON.parse(tags) } })
@@ -88,8 +82,6 @@ module.exports = {
             const id = req.params.id;
 
             const datapack = await Datapacks.findById(id);
-
-            console.log(datapack)
 
             if(!datapack) return res.sendStatus(404);
 

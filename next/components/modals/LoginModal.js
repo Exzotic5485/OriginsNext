@@ -24,7 +24,6 @@ export default function LoginModal({ visible, setVisible }) {
             username: username,
             password: password
         }).then((res) => {
-            console.log(res.data)
 
             setVisible(false)
         }).catch((e) => {

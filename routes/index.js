@@ -29,10 +29,20 @@ function registerRoutes({ server, nextApp }, directory = __dirname, root = '') {
 function router({ nextApp, nextHandler, server }) {
     const router = Router();
 
+    router.get("/verify", (req, res) => {
+        return nextApp.render(req, res, "/verify");
+    });
+
     router.use((req, res, next) => {
+        if(req.path.startsWith('/auth/') || req.path.startsWith('/_next/')) return next()
+
         if(req?.user?.banned) {
             console.log("Banned user tried to access " + req.url)
             return nextApp.render(req, res, "/banned")
+        }
+
+        if(req.isAuthenticated() && !req.user.verified) {
+            return res.redirect('/verify')
         }
 
         next()
@@ -83,7 +93,7 @@ function router({ nextApp, nextHandler, server }) {
     router.get('/tos', (req, res) => nextApp.render(req, res, '/tos'))
     router.get('/privacy', (req, res) => nextApp.render(req, res, '/privacy'))
 
-    registerRoutes({ nextApp, server })
+    registerRoutes({ nextApp, server: router })
 
     router.all('/_next/*', nextHandler)
 

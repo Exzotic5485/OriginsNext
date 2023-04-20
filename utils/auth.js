@@ -15,7 +15,7 @@ function checkAuthenticated(req, res, next) {
         return next()
     }
 
-    res.redirect(`/auth/login`)
+    res.redirect(`/?notAuthenticated=1`)
 }
 
 function checkCanManageDatapack(req, res, next) {

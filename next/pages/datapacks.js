@@ -89,7 +89,7 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
                 <Grid xs={24} sm={6} direction="column">
                     <SearchCard searchValue={search} setSearchValue={setSearch} sortValue={sort} setSortValue={setSort} />
                     {datapacks.map((datapack) => {
-                        return <Datapack name={datapack.title} description={datapack.description} imageSrc={`/uploads/datapack/${datapack.image}`} slug={datapack.slug} author={datapack.owner?.username} summary={datapack.summary} downloads={datapack.downloads} key={uuidv4()} />;
+                        return <Datapack name={datapack.title} description={datapack.description} imageSrc={`/uploads/datapack/${datapack.image}`} slug={datapack.slug} author={datapack.owner?.username} summary={datapack.summary} downloads={datapack.downloads} likes={datapack.likes.length} key={uuidv4()} />;
                     })}
                 </Grid>
             </Grid.Container>

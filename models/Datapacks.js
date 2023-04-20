@@ -3,8 +3,6 @@ const tagsList = require('../shared/filters')
 
 const tagsArray = tagsList.map((tag) => tag.value)
 
-console.log(tagsArray)
-
 const schema = new Schema({
     owner: {
         type: Types.ObjectId,

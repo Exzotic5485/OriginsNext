@@ -1,7 +1,8 @@
-import { Button, Card, Grid, Text, Link, Row, Badge } from '@nextui-org/react'
+import { Button, Card, Grid, Text, Link, Row, Badge, Spacer } from '@nextui-org/react'
 import { DownloadIcon } from './icons/download';
+import { HeartIcon } from './icons/heart';
 
-export default function Datapack({ name, downloads, author, imageSrc, slug, summary, deleted }) {
+export default function Datapack({ name, downloads, author, imageSrc, slug, summary, deleted, likes = 0 }) {
 
     const downloadClick = (e) => {
         window.location.href = `/datapack/${slug}/download`
@@ -28,6 +29,11 @@ export default function Datapack({ name, downloads, author, imageSrc, slug, summ
                             {summary}
                         </Text>
                         <Row css={{ ml: 'auto', justifyContent: "flex-end" }}>
+                          <HeartIcon />
+                          <Text size={15}>
+                            {likes}
+                          </Text>
+                          <Spacer />
                           <DownloadIcon />
                           <Text size={15}>
                             {downloads}

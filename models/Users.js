@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require('mongoose')
+const { Schema, model } = require('mongoose')
 
 const schema = new Schema({
     email: {
@@ -43,6 +43,16 @@ const schema = new Schema({
             color: String
         },
         default: []
+    },
+    lastLoginIp: {
+        type: String
+    },
+    verified: {
+        type: Boolean,
+        default: false
+    },
+    verificationCode: {
+        type: String
     }
 })
 

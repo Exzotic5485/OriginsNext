@@ -15,13 +15,33 @@ module.exports = [
         icon: ""
     },
     {
-        name: "Overpowered",
-        value: "overpowered",
+        name: "Technical",
+        value: "technical",
         icon: ""
     },
     {
-        name: "Technical",
-        value: "technical",
+        name: "Offensive",
+        value: "offensive",
+        icon: ""
+    },
+    {
+        name: "Defensive",
+        value: "defensive",
+        icon: ""
+    },
+    {
+        name: "Exploration",
+        value: "exploration",
+        icon: ""
+    },
+    {
+        name: "Origin Class",
+        value: "class",
+        icon: ""
+    },
+    {
+        name: "Library",
+        value: "library",
         icon: ""
     }
 ]

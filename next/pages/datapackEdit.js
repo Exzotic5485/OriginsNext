@@ -1,11 +1,7 @@
 import { Card, Divider, Grid, Input, Text, Textarea, Image, Row, Button, Col, Switch } from "@nextui-org/react";
 import Page from "../components/Page";
 import { useState, useRef, useEffect } from "react";
-import { UndoIcon } from "../components/icons/undo";
-import { UploadIcon } from "../components/icons/upload";
-import Select from 'react-select'
 import TagDropdown from "../components/dropdowns/TagDropdown";
-import VersionsDropdown from "../components/dropdowns/VersionsDropdown";
 import { TrashIcon } from "../components/icons/trash";
 import { toast } from "react-hot-toast";
 import axios from "axios";
@@ -13,7 +9,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export async function getServerSideProps(context) {
-    console.log(context.query.datapack)
     return {
         props: {
             datapack: context.query.datapack || null

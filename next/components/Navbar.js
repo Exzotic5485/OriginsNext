@@ -1,7 +1,7 @@
 import { Image, Navbar, Text, Button, Row, Dropdown, Avatar, Badge } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { CheckmarkIcon, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { NotificationIcon } from "./icons/notification";
@@ -39,6 +39,11 @@ export default function NavbarComponent({ currentPage }) {
             window.history.replaceState({}, document.title, window.location.pathname);
             setLoginModalVisible(true);
         }
+
+        if(urlParams.get("notAuthenticated")) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setLoginModalVisible(true);
+        }
     }, []);
 
     const isActive = (page) => {
@@ -66,8 +71,6 @@ export default function NavbarComponent({ currentPage }) {
         const notification = user.notifications[key];
 
         if(!notification) return;
-
-        console.log(notification);
 
         axios.post("/api/user/notifications/read", { id: notification._id }).then(() => {
             const newNotifications = [...user.notifications];

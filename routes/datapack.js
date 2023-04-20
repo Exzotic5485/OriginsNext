@@ -93,8 +93,6 @@ module.exports = {
 
                     file.uploaded = file.uploaded.toISOString()
                 })
-
-                console.log(datapack)
     
                 nextApp.render(req, res, '/datapack', { datapack })
             } catch (e) {

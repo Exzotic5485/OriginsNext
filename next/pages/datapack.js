@@ -29,7 +29,6 @@ export async function getServerSideProps(context) {
 }
 
 export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
-    console.log(`Is Mod: ${isModerator}`);
     const [likes, setLikes] = useState(datapack.likes);
     const [liked, setLiked] = useState(datapack.userLiked);
 

@@ -48,8 +48,6 @@ module.exports = {
         router.post('/notifications/read', checkCanManageProfile, async (req, res) => {
             try {
                 const notificationId = req.body.id;
-
-                console.log(notificationId)
     
                 await Users.updateOne({ _id: req.user._id }, { $pull: { notifications: { _id: notificationId } } });
     

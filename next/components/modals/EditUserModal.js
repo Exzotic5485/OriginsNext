@@ -48,8 +48,6 @@ export default function EditUserModal({ visible, setVisible, user }) {
 
         if(image) formData.append("image", image);
 
-        console.log("FORM: " + formData);
-
         axios.post(`/api/user/${user.id}/edit`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',

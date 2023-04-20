@@ -1,18 +1,6 @@
 const Datapacks = require('../models/Datapacks')
 const Users = require('../models/Users')
 
-const { isValidObjectId, Types: { ObjectId } } = require('mongoose')
-
-const { registerRoutes } = require('../utils/routes')
-const { checkAuthenticated } = require('../utils/auth')
-
-const { datapackImageUpload }= require('../utils/multer')
-
-function generateId(req, res, next) {
-    req.generatedId = new ObjectId();
-    next();
-}
-
 module.exports = {
     route: '/api',
     execute: ({ router, nextApp }) => {
@@ -31,8 +19,6 @@ module.exports = {
 
             for (const datapack of datapacks) {
                 datapack.owner = await Users.findById(datapack.owner, { username: 1, _id: 0 }).lean();
-
-                console.log(datapack.owner)
             }
 
             const totalPages = Math.ceil((await Datapacks.countDocuments(query)) / limit);

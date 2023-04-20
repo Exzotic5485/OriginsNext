@@ -5,8 +5,6 @@ import versionList from "../../../shared/versions";
 export default function VersionsDropdown({ value, setValue }) {
     const valueArr = Array.from(value);
 
-    console.log(valueArr)
-
     const parsedName = () => {
         let count = 0;
 
