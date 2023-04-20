@@ -1,13 +1,11 @@
-import { Badge, Button, Card, Checkbox, Col, Divider, Link, Row, Table, Text, Tooltip } from "@nextui-org/react";
+import { Card, Checkbox, Col, Divider, Link, Row, Table, Text, Tooltip } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { CheckmarkIcon } from "react-hot-toast";
 import AdminPage from "../../components/AdminPage";
-import { CheckIcon } from "../../components/icons/check";
 import { EyeIcon } from "../../components/icons/eye";
-import { TrashIcon } from "../../components/icons/trash";
 import ReportDetailsModal from "../../components/modals/ReportDetailsModal";
 import { IconButton } from "../../components/styled/IconButton";
+
 export async function getServerSideProps(context) {
     return {
         props: {

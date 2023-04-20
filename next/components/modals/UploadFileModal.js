@@ -1,8 +1,7 @@
-import { Modal, useModal, Button, Text, Input, Loading, Switch, Col } from "@nextui-org/react";
+import { Modal, Button, Text, Input, Loading } from "@nextui-org/react";
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useState, useRef } from "react";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import VersionsDropdown from "../dropdowns/VersionsDropdown";
 import { UploadIcon } from "../icons/upload";
 

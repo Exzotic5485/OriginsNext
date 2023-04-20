@@ -1,7 +1,6 @@
-import { Button, Card, Link, Text } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import { Button, Card, Text } from "@nextui-org/react";
+import React, { useEffect} from "react";
 import SendIcon from "../components/icons/send";
-import { CheckIcon } from "../components/icons/check";
 import axios from "axios";
 
 export default function VerifyPage({}) {

@@ -1,8 +1,7 @@
-import { Button, Card, Row, Text } from "@nextui-org/react";
+import { Button, Row, Text } from "@nextui-org/react";
 import React from "react";
 
 import Page from "../components/Page";
-import SearchIcon from "../components/icons/search";
 
 export default function HomePage({}) {
     return (

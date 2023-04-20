@@ -1,5 +1,4 @@
 import { Card, Text, Checkbox } from '@nextui-org/react'
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import filters from '../../../shared/filters'
 

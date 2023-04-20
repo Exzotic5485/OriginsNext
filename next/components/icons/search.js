@@ -1,4 +1,4 @@
-import { Container, useTheme } from '@nextui-org/react'
+import { useTheme } from '@nextui-org/react'
 
 export default function SearchIcon({ width, height }) {
 
