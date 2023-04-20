@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Col, Divider, Input, Link, Row, Table, Text, Tooltip } from "@nextui-org/react";
+import { Badge, Card, Col, Divider, Input, Link, Row, Table, Text, Tooltip } from "@nextui-org/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";

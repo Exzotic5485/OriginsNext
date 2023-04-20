@@ -19,10 +19,10 @@ module.exports = {
     execute: ({ router, nextApp }) => {
     
         router.post("/login", checkNotAuthenticated, loginLimiter, passport.authenticate('local', {}), async (req, res) => {
-            res.send({ success: true })
-
-            req.user.lastLoginIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress 
+            req.user.lastLoginIp = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress 
             await req.user.save()
+
+            res.send({ success: true, shouldVerify: !req.user.verified })
         });
     
     

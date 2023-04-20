@@ -25,6 +25,8 @@ export default function LoginModal({ visible, setVisible }) {
             password: password
         }).then((res) => {
 
+            if(res?.data?.shouldVerify) return window.location.href = "/verify"
+
             setVisible(false)
         }).catch((e) => {
             console.log(e)

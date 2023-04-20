@@ -107,7 +107,7 @@ export default function NavbarComponent({ currentPage }) {
                                 <Dropdown placement="top-right">
                                     <Dropdown.Trigger>
                                         <Navbar.Item>
-                                            <Badge isInvisible={user.notifications.length == 0} disableOutline content={user.notifications.length} size="xs" color="error">
+                                            <Badge isInvisible={user?.notifications?.length == 0} disableOutline content={user?.notifications?.length} size="xs" color="error">
                                                 <NotificationIcon height={32} />
                                             </Badge>
                                         </Navbar.Item>
@@ -130,7 +130,7 @@ export default function NavbarComponent({ currentPage }) {
                                         }}
                                     >
                                         <Dropdown.Section title="Notifications">
-                                            {user.notifications.length > 0 ? (
+                                            {user?.notifications?.length > 0 ? (
                                                 user.notifications.map((notification, index) => (
                                                     <Dropdown.Item color={notification.color || "default"} key={index} showFullDescription description={notification.message}>
                                                         {notification.title}
