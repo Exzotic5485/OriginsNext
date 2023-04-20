@@ -15,6 +15,7 @@ import parseVersions from "../../shared/parseVersions";
 import { TrashIcon } from "../components/icons/trash";
 import { EditIcon } from "../components/icons/edit";
 import ReportPostModal from "../components/modals/ReportPostModal";
+import '../../public/css/markdown.css'
 
 export async function getServerSideProps(context) {
     const { req } = context;
@@ -114,7 +115,8 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
                         <Divider />
                     </Card.Header>
                     <Card.Body>
-                        <ReactMarkdown remarkPlugins={[remarkGfm]} children={datapack.description.replace(/\\n/g, "\n").replace(/(\r\n|\n|\r)/gm, "  \n")} />
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body" children={
+                            '```js  \n console.log("Hello world!")  \n ```' /* datapack.description.replace(/\\n/g, "\n").replace(/(\r\n|\n|\r)/gm, "  \n") */} />
                     </Card.Body>
                 </Card>
                 <Card css={{ height: "max-content", mw: "300px" }}>

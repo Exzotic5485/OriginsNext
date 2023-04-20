@@ -1,0 +1,32 @@
+.markdown-body {
+    --color-fg-default: #c9d1d9;
+    --color-fg-muted: #a8b0b9;
+    --color-fg-subtle: #6e7681;
+    --color-border-default: #50575f;
+    --color-border-muted: #21262d;
+}
+
+.markdown-body blockquote {
+    border-radius: 0;
+    margin: 0;
+    padding: 0 1em;
+    color: var(--color-fg-muted);
+    border-left: 0.25em solid var(--color-border-default);
+}
+
+.markdown-body blockquote {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.markdown-body blockquote > :first-child {
+    margin-top: 0;
+}
+
+.markdown-body blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+.markdown-body ul {
+    list-style-type: unset;
+}

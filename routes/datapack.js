@@ -2,15 +2,14 @@ const Datapacks = require('../models/Datapacks')
 
 const { checkAuthenticated, checkCanManageDatapack, checkNotDeleted } = require('../utils/auth')
 
-const { isValidObjectId, Types: { ObjectId } } = require('mongoose')
+const { isValidObjectId } = require('mongoose')
 const Users = require('../models/Users')
-
-const DownloadManger = require('../utils/downloadManager')
+const DownloadManager = require('../utils/downloadmanager')
 
 module.exports = {
     route: '/datapack',
     execute: ({ router, nextApp }) => {
-        const downloadManager = new DownloadManger();
+        const downloadManager = new DownloadManager();
 
         router.get('/', (req, res) => res.redirect('/datapacks'))
 
@@ -68,7 +67,7 @@ module.exports = {
             const idOrSlug = req.params.id
 
             try {
-                const datapack = await Datapacks.findOne(isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug }, { deletedAt: 0 }).lean();
+                const datapack = await Datapacks.findByIdOrSlug(idOrSlug, { deletedAt: 0 }).lean();
 
                 if(!datapack) return res.sendStatus(404)
 

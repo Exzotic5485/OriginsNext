@@ -58,7 +58,7 @@ const schema = new Schema({
 }, {
     statics: {
         findByIdOrSlug(idOrSlug, projection = {}) {
-            return this.findOne(isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug }, projection)
+            return this.findOne({ $or: [ { _id: idOrSlug }, { slug: idOrSlug }]}, projection)
         }
     },
     methods: {
