@@ -4,7 +4,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const bodyParser = require('body-parser')
 const next = require('next')
 const passport = require('passport')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 require('dotenv').config()
 
 const nextApp = next({ dev: process.env.DEV == 'true', dir: 'next' })

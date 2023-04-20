@@ -26,14 +26,14 @@ module.exports = {
             const { username, email } = req.body;
 
             if(username && username !== user.username) {
-                if(await Users.exists({ username: { $regex: username, $options: 'i' } })) return res.send({ error: "Username already taken!" })
+                if(await Users.exists({ username: { $regex: `^${username}$`, $options: 'i' } })) return res.send({ error: "Username already taken!" })
 
                 user.usernameHistory.push(user.username);
                 user.username = username;
             }
 
             if(email && email !== user.email) {
-                if(await Users.exists({ email: { $regex: email, $options: 'i' } })) return res.send({ error: "Email already in use!" })
+                if(await Users.exists({ email: { $regex: `^${email}$`, $options: 'i' } })) return res.send({ error: "Email already in use!" })
 
                 user.email = email;
             }

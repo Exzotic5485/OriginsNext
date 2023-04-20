@@ -27,7 +27,7 @@ module.exports = {
     
     
         router.post("/register", checkNotAuthenticated, loginLimiter, async (req, res) => {
-            const userExists = await users.findOne({ $or: [{ username: req.body.username }, { email: req.body.email }] });
+            const userExists = await users.exists({ $or: [{ username: { $regex: `^${req.body.username}$`, $options: 'i' } }, { email: { $regex: `^${req.body.email}$`, $options: 'i' } }] });
     
             if (userExists) {
                 return res.send({ invalid: true });

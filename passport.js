@@ -8,7 +8,7 @@ const axios = require('axios')
 const users = require('./models/Users')
 
 async function createUniqueUsername(username) {
-    const usernameTaken = await users.exists({ username: username })
+    const usernameTaken = await users.exists({ username: { $regex: `^${username}$`, $options: 'i' } })
 
     if(!usernameTaken) return username;
 
@@ -19,8 +19,8 @@ async function createUniqueUsername(username) {
 
 async function verifyLocal(username, password, done) {
     const user = await users.findOne({$or: [
-        { email: username },
-        { username: username }
+        { email: { $regex: `^${username}$`, $options: 'i' } },
+        { username: { $regex: `^${username}$`, $options: 'i' } }
     ]})
 
     if(!user) {
@@ -42,7 +42,7 @@ async function verifyDiscord(accessToken, refreshToken, profile, done) {
         return done(null, discordUser)
     }
 
-    const emailUsed = await users.exists({ email: profile.email });
+    const emailUsed = await users.exists({ email: { $regex: `^${profile.email}$`, $options: 'i' } });
 
     if(emailUsed) {
         return done(null, false)
@@ -77,7 +77,7 @@ passport.use(new localStrategy({}, verifyLocal))
 passport.use(new discordStrategy({
     clientID: "1062409602685227068",
     clientSecret: "VNJRjqeMkiORyYjLRwHQA1t5CPYqNaBi",
-    callbackURL: "http://localhost/auth/discord/callback",
+    callbackURL: "https://originsdatapacks.com/auth/discord/callback",
     scope: ['identify', 'email']
 }, verifyDiscord))
 
