@@ -1,12 +1,11 @@
 const Datapacks = require('../../models/Datapacks')
-const Users = require('../../models/Users')
 const Reports = require('../../models/Reports')
 
 const fs = require('fs')
 
-const { isValidObjectId, Types: { ObjectId } } = require('mongoose')
+const {  Types: { ObjectId } } = require('mongoose')
 
-const { checkAuthenticated, checkCanManageDatapack, checkNotDeleted } = require('../../utils/auth')
+const { checkAuthenticated, checkCanManageDatapack } = require('../../utils/auth')
 
 const { datapackImageUpload, datapackFileUpload }= require('../../utils/multer')
 

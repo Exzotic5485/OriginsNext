@@ -4,7 +4,7 @@ const { checkAuthenticated, checkCanManageDatapack, checkNotDeleted } = require(
 
 const { isValidObjectId } = require('mongoose')
 const Users = require('../models/Users')
-const DownloadManager = require('../utils/downloadmanager')
+const DownloadManager = require('../utils/downloadManager')
 
 module.exports = {
     route: '/datapack',
