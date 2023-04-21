@@ -48,8 +48,7 @@ export default function AdminPageUsers({}) {
         axios
             .get(`/api/admin/users?search=${searchValue}`)
             .then((res) => {
-                const newArr = res.data.map((user) => ({ ...user, email: `${user.username}@hidden.com` }));
-                setUsers(newArr);
+                setUsers(res.data);
             })
             .catch((err) => {
                 console.log(err);
