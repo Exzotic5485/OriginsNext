@@ -16,6 +16,7 @@ import { TrashIcon } from "../components/icons/trash";
 import { EditIcon } from "../components/icons/edit";
 import ReportPostModal from "../components/modals/ReportPostModal";
 import '../../public/css/markdown.css'
+import Head from "next/head";
 
 export async function getServerSideProps(context) {
     const { req } = context;
@@ -98,6 +99,13 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
 
     return (
         <Page>
+            <Head>
+                <meta property="og:site_name" content="Origin Datapacks" />
+                <meta property="og:title" content={datapack.title} />
+                <meta property="og:description" content={datapack.summary} />
+                <meta property="og:url" content={`https://originsdatapacks.com/datapack/${datapack.slug}`} />
+                <meta property="og:image" content={`https://originsdatapacks.com/uploads/datapack/${datapack.image}a`} />
+            </Head>
             <ReportPostModal visible={reportModalVisible} setVisible={setReportModalVisible} datapackId={datapack.id} />
             <Row css={{ justifyContent: "center", flexWrap: "wrap", mt: 10 }}>
                 <Card css={{ height: "max-content", mw: "800px", mr: 10, mb: 10 }}>
