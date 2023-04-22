@@ -104,7 +104,8 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
                 <meta property="og:title" content={datapack.title} />
                 <meta property="og:description" content={datapack.summary} />
                 <meta property="og:url" content={`https://originsdatapacks.com/datapack/${datapack.slug}`} />
-                <meta property="og:image" content={`https://originsdatapacks.com/uploads/datapack/${datapack.image}a`} />
+                <meta property="og:image" content={`https://originsdatapacks.com/uploads/datapack/${datapack.image}`} />
+                <meta name="theme-color" content="#0099ff"></meta>
             </Head>
             <ReportPostModal visible={reportModalVisible} setVisible={setReportModalVisible} datapackId={datapack.id} />
             <Row css={{ justifyContent: "center", flexWrap: "wrap", mt: 10 }}>
