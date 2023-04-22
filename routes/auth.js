@@ -33,7 +33,7 @@ module.exports = {
                 return res.send({ invalid: true });
             }
 
-            const usersIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+            const usersIp = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress
             const ipUsed = await users.exists({ lastLoginIp: usersIp })
 
             if(ipUsed) {
@@ -46,7 +46,7 @@ module.exports = {
                 username: req.body.username,
                 email: req.body.email,
                 password: hashedPassword,
-                lastLoginIp: ipUsed,
+                lastLoginIp: usersIp,
                 verificationCode: crypto.randomBytes(20).toString('hex')
             });
 

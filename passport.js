@@ -4,6 +4,7 @@ const passport = require('passport')
 const bycrypt = require('bcrypt')
 const fs = require('fs')
 const axios = require('axios')
+const crypto = require('crypto')
 
 const users = require('./models/Users')
 
@@ -34,12 +35,19 @@ async function verifyLocal(username, password, done) {
     return done(null, passwordMatches ? user : false);
 }
 
-async function verifyDiscord(accessToken, refreshToken, profile, done) {
+async function verifyDiscord(req, accessToken, refreshToken, profile, done) {
     
     const discordUser = await users.findOne({ discordId: profile.id })
 
     if(discordUser) {
         return done(null, discordUser)
+    }
+
+    const usersIp = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    const ipUsed = await users.exists({ lastLoginIp: usersIp })
+
+    if(ipUsed) {
+        return done(null, false)
     }
 
     const emailUsed = await users.exists({ email: { $regex: `^${profile.email}$`, $options: 'i' } });
@@ -53,6 +61,8 @@ async function verifyDiscord(accessToken, refreshToken, profile, done) {
     const newUser = await users.create({
         discordId: profile.id,
         email: profile?.email,
+        verified: true,
+        lastLoginIp: usersIp,
         username
     })
 
@@ -78,7 +88,8 @@ passport.use(new discordStrategy({
     clientID: "1062409602685227068",
     clientSecret: "VNJRjqeMkiORyYjLRwHQA1t5CPYqNaBi",
     callbackURL: "https://originsdatapacks.com/auth/discord/callback",
-    scope: ['identify', 'email']
+    scope: ['identify', 'email'],
+    passReqToCallback: true
 }, verifyDiscord))
 
 passport.serializeUser((user, done) => done(null, user.id))
