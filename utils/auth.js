@@ -28,6 +28,7 @@ function checkCanManageDatapack(req, res, next) {
             return res.redirect('/datapacks')
         }
 
+        req.generatedId = result.id
         if(result.owner.equals(req.user._id)) return next()
 
         res.sendStatus(403)
