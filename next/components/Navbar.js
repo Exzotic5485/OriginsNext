@@ -146,7 +146,7 @@ export default function NavbarComponent({ currentPage }) {
                                 </Dropdown>
                                 <Dropdown placement="top-right">
                                     <Dropdown.Trigger>
-                                        <Avatar bordered={user.moderator} color={user.moderator ? "gradient" : "default"} size="md" src={`/uploads/user/${user.image}`} />
+                                        <Avatar bordered={user.moderator} color={user.moderator ? "success" : "default"} size="md" src={`/uploads/user/${user.image}`} />
                                     </Dropdown.Trigger>
                                     <Dropdown.Menu onAction={dropdownAction}>
                                         <Dropdown.Item key="profile">

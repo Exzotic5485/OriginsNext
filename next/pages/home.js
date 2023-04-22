@@ -6,7 +6,7 @@ import Page from "../components/Page";
 export default function HomePage({}) {
     return (
         <Page>
-            <Row css={{ flexDirection: "column", alignItems: "center" }}>
+            <Row css={{ flexDirection: "column", alignItems: "center", pb: '150px' }}>
                 <Text h1 size={60} css={{ textGradient: "45deg, white -20%, $blue800 50%", textAlign: "center" }}>
                     Origins Datapacks
                 </Text>
@@ -15,7 +15,7 @@ export default function HomePage({}) {
                 </Text>
                 <Row justify="center" css={{ gap: 10 }}>
                     <Button size="sm" as="a" bordered href="/datapacks">Find Datapacks...</Button>
-                    <Button size="sm" as="a" bordered href="/datapack/new">Upload</Button>
+                    <Button size="sm" as="a" bordered href="/datapack/new">Upload Creation</Button>
                 </Row>
             </Row>
         </Page>
