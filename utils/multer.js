@@ -6,6 +6,9 @@ const Datapacks = require('../models/Datapacks')
 const { isValidObjectId } = require('mongoose')
 
 const datapackImageUpload = multer({
+    limits: {
+      fileSize: 8000000
+    },
     storage: multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, `./public/uploads/datapack/`)
@@ -29,6 +32,9 @@ const datapackImageUpload = multer({
 })
 
 const datapackFileUpload = multer({
+  limits: {
+    fileSize: 20000000
+  },
   storage: multer.diskStorage({
     destination: async (req, file, cb) => {
       const idOrSlug = req.params.id;
@@ -60,6 +66,9 @@ const datapackFileUpload = multer({
 })
 
 const userImageUpload = multer({
+  limits: {
+    fileSize: 8000000
+  },
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, `./public/uploads/user`)
