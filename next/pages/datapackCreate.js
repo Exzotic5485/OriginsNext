@@ -8,6 +8,8 @@ import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import '../../public/css/markdown.css'
+
 export default function DatapackCreatePage({  }) {
     const defaultImagePath = "/uploads/datapack/default.png"
 
