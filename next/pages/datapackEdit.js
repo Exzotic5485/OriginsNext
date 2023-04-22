@@ -126,7 +126,7 @@ export default function DatapackEditPage({ datapack }) {
                             </Row>
                             {
                                 previewState ? (
-                                    <Card variant="bordered" css={{ mt: 10 }}><Card.Body><ReactMarkdown remarkPlugins={[remarkGfm]} children={description.replace(/\\n/g, '\n').replace(/(\r\n|\n|\r)/gm, "  \n")} /></Card.Body></Card>
+                                    <Card variant="bordered" css={{ mt: 10 }}><Card.Body><ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body" children={description.replace(/\\n/g, '\n').replace(/(\r\n|\n|\r)/gm, "  \n")} /></Card.Body></Card>
                                 ) : (
                                     <Textarea ref={descriptionTextAreaRef} maxLength={4000} rows={20} bordered label="Description" placeholder="Longer, more descriptive information about your datapack" helperText="You can use markdown in your description" css={{ mt: 25 }} onChange={(e) => setDescription(e.target.value)} />
                                 )
