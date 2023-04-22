@@ -115,8 +115,7 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
                         <Divider />
                     </Card.Header>
                     <Card.Body>
-                        <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body" children={
-                            '```js  \n console.log("Hello world!")  \n ```' /* datapack.description.replace(/\\n/g, "\n").replace(/(\r\n|\n|\r)/gm, "  \n") */} />
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body" children={datapack.description.replace(/\\n/g, "\n").replace(/(\r\n|\n|\r)/gm, "  \n")} />
                     </Card.Body>
                 </Card>
                 <Card css={{ height: "max-content", mw: "300px" }}>

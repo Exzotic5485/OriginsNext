@@ -2,7 +2,6 @@ const Datapacks = require('../models/Datapacks')
 
 const { checkAuthenticated, checkCanManageDatapack, checkNotDeleted } = require('../utils/auth')
 
-const { isValidObjectId } = require('mongoose')
 const Users = require('../models/Users')
 const DownloadManager = require('../utils/downloadManager')
 

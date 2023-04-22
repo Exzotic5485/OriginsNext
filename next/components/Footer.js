@@ -6,9 +6,10 @@ export default function Footer() {
             <footer>
                 <Divider css={{ mt: 10 }} />
                 <Row css={{ width: '100%' }}>
-                    <div style={{ marginLeft: 'auto', justifyContent: "flex-end" }}>
+                    <div style={{ marginLeft: 'auto', justifyContent: "flex-end", display: 'flex', columnGap: 10 }}>
+                        <Link href="/discord" color="text">Discord</Link>
                         <Link href="/tos" color="text">Terms of Service</Link>
-                        <Link href="/privacy" color="text" css={{ ml: 10 }}>Privacy Policy</Link>
+                        <Link href="/privacy" color="text">Privacy Policy</Link>
                     </div>
                 </Row>
             </footer>

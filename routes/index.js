@@ -33,6 +33,8 @@ function router({ nextApp, nextHandler, server }) {
         return nextApp.render(req, res, "/verify");
     });
 
+    router.get("/discord", (req, res) => res.redirect('https://discord.gg/vg6Vf8esxH'))
+
     router.use((req, res, next) => {
         if(req.path.startsWith('/auth/') || req.path.startsWith('/_next/')) return next()
 

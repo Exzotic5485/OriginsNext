@@ -1,4 +1,4 @@
-const { Schema, model, Types, isValidObjectId } = require('mongoose')
+const { Schema, model, Types, Types: { ObjectId } } = require('mongoose')
 const tagsList = require('../shared/filters')
 
 const tagsArray = tagsList.map((tag) => tag.value)
@@ -58,7 +58,11 @@ const schema = new Schema({
 }, {
     statics: {
         findByIdOrSlug(idOrSlug, projection = {}) {
-            return this.findOne({ $or: [ { _id: idOrSlug }, { slug: idOrSlug }]}, projection)
+            if(ObjectId.isValid(idOrSlug) && String(new ObjectId(idOrSlug)) === idOrSlug){
+                return this.findOne({ _id: idOrSlug }, projection)
+            }
+
+            return this.findOne({ slug: idOrSlug }, projection)
         }
     },
     methods: {
