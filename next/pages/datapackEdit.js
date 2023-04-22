@@ -105,7 +105,7 @@ export default function DatapackEditPage({ datapack }) {
     }
 
     return (
-        <Page>
+        <Page pageTitle='Edit Datapack - Origins Datapacks'>
             <Grid.Container justify="center" gap={2}>
                 <Grid xs={24} sm={7}>
                     <Card css={{ mh: 1000, padding: "5px 10px" }}>

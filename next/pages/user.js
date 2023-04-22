@@ -21,7 +21,7 @@ export default function UserPage({ user, isModerator }) {
     const [editModalVisible, setEditModalVisible] = useState(false);
 
     return (
-        <Page>
+        <Page pageTitle={`${user.username} - Origins Datapacks`}>
             <Row css={{ justifyContent: "center", flexWrap: "wrap", mt: 10, gap: 10 }}>
                 <Card css={{ height: "max-content", mw: "400px" }}>
                     <Card.Header>

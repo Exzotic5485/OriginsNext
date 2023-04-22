@@ -98,7 +98,7 @@ export default function DatapackPage({ datapack, isLoggedIn, isModerator }) {
     };
 
     return (
-        <Page>
+        <Page pageTitle={`${datapack.title} - Origins Datapacks`}>
             <Head>
                 <meta property="og:site_name" content="Origin Datapacks" />
                 <meta property="og:title" content={datapack.title} />

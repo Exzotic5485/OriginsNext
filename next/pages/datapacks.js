@@ -66,7 +66,7 @@ export default function DatapacksPage({ currentPage, currentFilters }) {
     }, [page, selectedFilters, search, sort]);
 
     return (
-        <Page currentPage="datapacks">
+        <Page currentPage="datapacks" pageTitle='Datapacks - Origins Datapacks'>
             <Grid.Container gap={2} justify="center" css={{ mt: 10 }}>
                 <Grid xs={0} sm={3}>
                     <Card css={{ height: 'max-content' }}>
