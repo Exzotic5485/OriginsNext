@@ -69,20 +69,20 @@ module.exports = {
         router.get('/verify/:code', checkAuthenticated, async (req, res) => {
             const verificationCode = req.params.code;
 
+            if(verificationCode == "resend") {
+                if(req.user.verified) return res.send(403)
+
+                await sendVerificationEmail(req.user.email, req.user.verificationCode)
+    
+                return res.send({ success: true })
+            }
+
             if(verificationCode != req.user.verificationCode) return res.send(400)
 
             req.user.verified = true;
             await req.user.save()
 
             res.redirect('/')
-        })
-
-        router.get('/verify/resend', checkAuthenticated, async (req, res) => {
-            if(req.user.verified) return res.send(403)
-
-            await sendVerificationEmail(req.user.email, req.user.verificationCode)
-
-            res.send({ success: true })
         })
     }
 }
