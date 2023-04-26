@@ -15,7 +15,7 @@ export default function Datapack({ name, downloads, author, imageSrc, slug, summ
                   <img src={imageSrc} width={60} height={60} style={{ alignSelf: 'center', borderRadius: 4, width: 60, height: 60 }}/>
               </Grid>
               <Grid style={{flex: 1}}>
-                  <Card.Header css={{ flex: 1, mh: 10, mt: 10 }}>
+                  <Card.Header css={{ flex: 1 }}>
                     <Text b size={22}>{name}</Text>
                     {deleted && <Badge color="error" variant="flat" css={{ ml: 3 }}>Deleted</Badge>}
                     <Button size="xs" color="gradient" onClick={downloadClick} css={{ ml: 'auto' }} >Download</Button>

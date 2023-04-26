@@ -1,6 +1,6 @@
-import { Image, Navbar, Text, Button, Row, Dropdown, Avatar, Badge } from "@nextui-org/react";
+import { Image, Navbar, Text, Button, Row, Dropdown, Avatar, Badge, Link, Divider } from "@nextui-org/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -14,6 +14,8 @@ export default function NavbarComponent({ currentPage }) {
 
     const [loginModalVisible, setLoginModalVisible] = useState(false);
     const [registerModalVisible, setRegisterModalVisible] = useState(false);
+
+    const dropdownTriggerRef = useRef(null);
 
     useEffect(() => {
         axios
@@ -40,7 +42,7 @@ export default function NavbarComponent({ currentPage }) {
             setLoginModalVisible(true);
         }
 
-        if(urlParams.get("notAuthenticated")) {
+        if (urlParams.get("notAuthenticated")) {
             window.history.replaceState({}, document.title, window.location.pathname);
             setLoginModalVisible(true);
         }
@@ -64,33 +66,40 @@ export default function NavbarComponent({ currentPage }) {
             case "dashboard":
                 window.location.href = "/admin/users";
                 break;
+            case "notifications":
+                dropdownTriggerRef.current.click();
+                break;
         }
     };
 
     const notificationsAction = (key) => {
         const notification = user.notifications[key];
 
-        if(!notification) return;
+        if (!notification) return;
 
-        axios.post("/api/user/notifications/read", { id: notification._id }).then(() => {
-            const newNotifications = [...user.notifications];
-            newNotifications.splice(key, 1);
+        axios
+            .post("/api/user/notifications/read", { id: notification._id })
+            .then(() => {
+                const newNotifications = [...user.notifications];
+                newNotifications.splice(key, 1);
 
-            setUser({ ...user, notifications: newNotifications });
+                setUser({ ...user, notifications: newNotifications });
 
-            if(notification.link) window.href.location = notification.link;
-        }).catch(() => {
-            toast.error("An error occurred while marking notification as read.");
-        })
-    }
+                if (notification.link) window.href.location = notification.link;
+            })
+            .catch(() => {
+                toast.error("An error occurred while marking notification as read.");
+            });
+    };
 
     return (
         <Navbar isBordered variant="static">
             <Navbar.Brand>
+                <Navbar.Toggle aria-label="toggle navigation" css={{ "@xs": { display: "none" } }} />
                 <Image src="/img/logo.png" showSkeleton={false} height={36} width={36} />
                 <Text b>Origins Datapacks</Text>
             </Navbar.Brand>
-            <Navbar.Content activeColor="primary" variant="underline-rounded">
+            <Navbar.Content hideIn="xs" activeColor="primary" variant="underline-rounded">
                 <Navbar.Link isActive={isActive("home")} href="/">
                     Home
                 </Navbar.Link>
@@ -99,20 +108,21 @@ export default function NavbarComponent({ currentPage }) {
                 </Navbar.Link>
             </Navbar.Content>
             <Navbar.Content />
-            <Navbar.Content>
+            <Navbar.Content hideIn="xs">
                 <Row>
                     {user !== undefined ? (
                         user ? (
                             <Row css={{ gap: 10 }}>
                                 <Dropdown placement="top-right">
-                                    <Dropdown.Trigger>
-                                        <Navbar.Item>
+                                    <Dropdown.Trigger css={{ display: "none", "@xs": { display: "initial" }, "@hover": { cursor: "pointer" } }}>
+                                        <Navbar.Item ref={dropdownTriggerRef}>
                                             <Badge isInvisible={user?.notifications?.length == 0} disableOutline content={user?.notifications?.length} size="xs" color="error">
                                                 <NotificationIcon height={32} />
                                             </Badge>
                                         </Navbar.Item>
                                     </Dropdown.Trigger>
-                                    <Dropdown.Menu onAction={notificationsAction}
+                                    <Dropdown.Menu
+                                        onAction={notificationsAction}
                                         css={{
                                             $$dropdownMenuWidth: "340px",
                                             $$dropdownItemHeight: "70px",
@@ -145,12 +155,15 @@ export default function NavbarComponent({ currentPage }) {
                                     </Dropdown.Menu>
                                 </Dropdown>
                                 <Dropdown placement="top-right">
-                                    <Dropdown.Trigger>
+                                    <Dropdown.Trigger css={{ "@hover": { cursor: "pointer" } }}>
                                         <Avatar bordered={user.moderator} color={user.moderator ? "success" : "default"} size="md" src={`/uploads/user/${user.image}`} />
                                     </Dropdown.Trigger>
                                     <Dropdown.Menu onAction={dropdownAction}>
                                         <Dropdown.Item key="profile">
                                             <Text b>@{user.username}</Text>
+                                        </Dropdown.Item>
+                                        <Dropdown.Item css={{ display: "flex", "@xs": { display: "none" } }} key="notifications">
+                                            <Text>Notifications</Text>
                                         </Dropdown.Item>
                                         <Dropdown.Item withDivider key="createProject">
                                             <Text>Create Project</Text>
@@ -182,6 +195,45 @@ export default function NavbarComponent({ currentPage }) {
                 </Row>
                 {/* <Switch checked={!isDark} iconOn={<SunIcon />} iconOff={<MoonIcon />} onChange={(e) => setTheme(e.target.checked ? 'light' : 'dark')} /> */}
             </Navbar.Content>
+            <Navbar.Collapse>
+                <Navbar.CollapseItem>
+                    <Link color="inherit" css={{ minWidth: "100%" }} href="/">
+                        Home
+                    </Link>
+                </Navbar.CollapseItem>
+                <Navbar.CollapseItem>
+                    <Link color="inherit" css={{ minWidth: "100%" }} href="/datapacks">
+                        Datapacks
+                    </Link>
+                </Navbar.CollapseItem>
+                <Navbar.CollapseItem>
+                    <Divider />
+                </Navbar.CollapseItem>
+                {user ? (
+                    <>
+                        <Navbar.CollapseItem>
+                            <Link color="inherit" href={`/user/${user.username}`}>
+                                Profile
+                            </Link>
+                        </Navbar.CollapseItem>
+                        <Navbar.CollapseItem>
+                            <Link color="inherit" href={`/user/${user.username}`}>
+                                Create Project
+                            </Link>
+                        </Navbar.CollapseItem>
+                        <Navbar.CollapseItem>
+                            <Link color="error" href={`/auth/logout`}>
+                                Logout
+                            </Link>
+                        </Navbar.CollapseItem>
+                    </>
+                ) : (
+                    <>
+                        <Navbar.CollapseItem onClick={() => setLoginModalVisible(true)}>Login</Navbar.CollapseItem>
+                        <Navbar.CollapseItem onClick={() => setRegisterModalVisible(true)}>Signup</Navbar.CollapseItem>
+                    </>
+                )}
+            </Navbar.Collapse>
             <LoginModal visible={loginModalVisible} setVisible={setLoginModalVisible} />
             <RegisterModal visible={registerModalVisible} setVisible={setRegisterModalVisible} />
         </Navbar>
