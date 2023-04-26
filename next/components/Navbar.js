@@ -217,10 +217,17 @@ export default function NavbarComponent({ currentPage }) {
                             </Link>
                         </Navbar.CollapseItem>
                         <Navbar.CollapseItem>
-                            <Link color="inherit" href={`/user/${user.username}`}>
+                            <Link color="inherit" href={`/datapack/new`}>
                                 Create Project
                             </Link>
                         </Navbar.CollapseItem>
+                        {user.moderator && (
+                            <Navbar.CollapseItem>
+                                <Link color="inherit" href={`/admin/users`}>
+                                    Moderation Dashboard
+                                </Link>
+                            </Navbar.CollapseItem>
+                        )}
                         <Navbar.CollapseItem>
                             <Link color="error" href={`/auth/logout`}>
                                 Logout
