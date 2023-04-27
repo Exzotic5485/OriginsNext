@@ -43,5 +43,10 @@ module.exports = [
         name: "Library",
         value: "library",
         icon: ""
+    },
+    {
+        name: "Other",
+        value: "other",
+        icon: ""
     }
 ]
