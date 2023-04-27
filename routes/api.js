@@ -19,6 +19,7 @@ module.exports = {
 
             for (const datapack of datapacks) {
                 datapack.owner = await Users.findById(datapack.owner, { username: 1, _id: 0 }).lean();
+                datapack.likes = datapack.likes.length;
             }
 
             const totalPages = Math.ceil((await Datapacks.countDocuments(query)) / limit);

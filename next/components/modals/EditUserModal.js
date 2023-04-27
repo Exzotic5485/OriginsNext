@@ -15,8 +15,6 @@ export default function EditUserModal({ visible, setVisible, user }) {
     const [imagePreview, setImagePreview] = useState(`/uploads/user/${user.image}`);
     const [image, setImage] = useState();
 
-    const usernameDisabled = user.usernameLastChanged ? new Date(user.usernameLastChanged).getTime() + 2592000000 > new Date().getTime() : false;
-
     const handleUsername = (e) => {
         const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '');
 

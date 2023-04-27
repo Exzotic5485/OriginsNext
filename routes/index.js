@@ -68,22 +68,21 @@ function router({ nextApp, nextHandler, server }) {
         user.id = user._id.toString();
         delete(user._id)
 
-        const datapacks = await Datapacks.find({ owner: user.id }, { title: 1, summary: 1, slug: 1, image: 1, deleted: 1, _id: 0 }).lean() || [];
+        const datapacks = await Datapacks.find({ owner: user.id }, { title: 1, summary: 1, slug: 1, image: 1, deleted: 1, likes: 1, downloads: 1, _id: 0 }).lean() || [];
 
         user.datapacks = datapacks
 
-        user.likes = datapacks.reduce((acc, cur) => {
-            if(!cur.likes) return acc
-            return acc + cur.likes.length
-        }, 0)
-        
-        user.downloads = datapacks.reduce((acc, cur) => {
-            if(!cur.downloads) return acc
-            return acc + cur.downloads.length
-        }, 0)
+        user.likes = 0
+        user.downloads = 0
+
+        for (const datapack of user.datapacks) {
+            user.likes += datapack.likes.length;
+            user.downloads += datapack.downloads;
+
+            datapack.likes = datapack.likes.length
+        }
 
         if(req.user) user.isUser = user.id == req.user._id;
-
 
         user.email = user.isUser || req?.user?.moderator ? user.email : null;
 
