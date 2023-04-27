@@ -85,7 +85,7 @@ function router({ nextApp, nextHandler, server }) {
 
         user.usernameLastChanged = user.usernameLastChanged ? user.usernameLastChanged.toISOString() : null;
 
-        nextApp.render(req, res, "/user", { user })
+        nextApp.render(req, res, "/user", {  })
     })
 
     router.get('/admin', checkIsModerator, (req, res) => {
