@@ -59,6 +59,7 @@ function router({ nextApp, nextHandler, server }) {
         nextApp.render(req, res, "/datapacks");
     });
 
+    /*
     router.get("/user/:username", async (req, res) => {
         const user = await Users.findOne({ username: { $regex: `^${req.params.username}$`, $options: 'i' } }, { password: 0, __v: 0, created: 0 }).lean();
 
@@ -85,8 +86,9 @@ function router({ nextApp, nextHandler, server }) {
 
         user.usernameLastChanged = user.usernameLastChanged ? user.usernameLastChanged.toISOString() : null;
 
-        nextApp.render(req, res, "/user", {  })
+        nextApp.render(req, res, "/user", { user })
     })
+    */
 
     router.get('/admin', checkIsModerator, (req, res) => {
 
