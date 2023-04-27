@@ -59,9 +59,9 @@ function router({ nextApp, nextHandler, server }) {
         nextApp.render(req, res, "/datapacks");
     });
 
-    /*
+
     router.get("/user/:username", async (req, res) => {
-        const user = await Users.findOne({ username: { $regex: `^${req.params.username}$`, $options: 'i' } }, { password: 0, __v: 0, created: 0 }).lean();
+        const user = await Users.findOne({ username: { $regex: `^${req.params.username}$`, $options: 'i' } }, { username: 1, image: 1, moderator: 1, email: 1 }).lean();
 
         if(!user) return res.sendStatus(404)
 
@@ -84,11 +84,11 @@ function router({ nextApp, nextHandler, server }) {
 
         if(req.user) user.isUser = user.id == req.user._id;
 
-        user.usernameLastChanged = user.usernameLastChanged ? user.usernameLastChanged.toISOString() : null;
+
+        user.email = user.isUser || req?.user?.moderator ? user.email : null;
 
         nextApp.render(req, res, "/user", { user })
     })
-    */
 
     router.get('/admin', checkIsModerator, (req, res) => {
 
