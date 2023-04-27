@@ -116,7 +116,7 @@ export default function DatapackEditPage({ datapack }) {
                         </Card.Header>
                         <Card.Body>
                             <Input clearable bordered label={<><span>Title</span><Text b style={{color: "red", marginLeft: 2}}>*</Text></>} value={title} onInput={(e) => setTitle(e.target.value)} />
-                            <Input disabled bordered label="Slug" labelLeft="https://domain/datapacks/" css={{ mt: 15 }} value={slug} />
+                            <Input disabled bordered label="Slug" labelLeft="https://originsdatapacks.com/datapack/" css={{ mt: 15 }} value={slug} />
                             <Divider css={{ mt: 20, mb: 20 }} />
                             <Input clearable bordered label="Summary" placeholder="Short description about your datapack" value={summary} onInput={(e) => setSummary(e.target.value)} />
                             <Divider css={{ mt: 20, mb: 20 }} />
