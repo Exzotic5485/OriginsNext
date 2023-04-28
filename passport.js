@@ -86,7 +86,7 @@ async function verifyDiscord(req, accessToken, refreshToken, profile, done) {
 passport.use(new localStrategy({}, verifyLocal))
 passport.use(new discordStrategy({
     clientID: "1062409602685227068",
-    clientSecret: "VNJRjqeMkiORyYjLRwHQA1t5CPYqNaBi",
+    clientSecret: process.env.DISCORD_CLIENT_SECRET,
     callbackURL: "https://originsdatapacks.com/auth/discord/callback",
     scope: ['identify', 'email'],
     passReqToCallback: true

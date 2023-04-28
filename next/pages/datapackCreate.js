@@ -137,9 +137,9 @@ export default function DatapackCreatePage({  }) {
                         </Card.Header>
                         <Card.Body>
                             <Input clearable bordered label={<><span>Title</span><Text b style={{color: "red", marginLeft: 2}}>*</Text></>} value={title} onInput={(e) => setTitle(e.target.value)} />
-                            <Input clearable bordered label="Slug" labelLeft="https://originsdatapacks.com/datapack/" css={{ mt: 15 }} value={slug} onInput={handleSlugChange} />
+                            <Input clearable bordered label={<><span>Slug</span><Text b style={{color: "red", marginLeft: 2}}>*</Text></>} labelLeft="https://originsdatapacks.com/datapack/" css={{ mt: 15 }} value={slug} onInput={handleSlugChange} />
                             <Divider css={{ mt: 20, mb: 20 }} />
-                            <Input clearable bordered label="Summary" placeholder="Short description about your datapack" maxLength={125} onInput={(e) => setSummary(e.target.value)} />
+                            <Input clearable bordered label={<><span>Summary</span><Text b style={{color: "red", marginLeft: 2}}>*</Text></>} placeholder="Short description about your datapack" maxLength={125} onInput={(e) => setSummary(e.target.value)} />
                             <Divider css={{ mt: 20, mb: 20 }} />
                             <Row justify="flex-end">
                                 <Text b>Preview</Text>
@@ -149,7 +149,7 @@ export default function DatapackCreatePage({  }) {
                                 previewState ? (
                                     <Card variant="bordered" css={{ mt: 10 }}><Card.Body><ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body" children={description.replace(/\\n/g, '\n').replace(/(\r\n|\n|\r)/gm, "  \n")} /></Card.Body></Card>
                                 ) : (
-                                    <Textarea ref={descriptionTextAreaRef} maxLength={4000} rows={20} bordered label="Description" placeholder="Longer, more descriptive information about your datapack" helperText="You can use markdown in your description" css={{ mt: 25 }} onChange={(e) => setDescription(e.target.value)} />
+                                    <Textarea ref={descriptionTextAreaRef} maxLength={4000} rows={20} bordered label={<><span>Description</span><Text b style={{color: "red", marginLeft: 2}}>*</Text></>} placeholder="Longer, more descriptive information about your datapack" helperText="You can use markdown in your description" css={{ mt: 25 }} onChange={(e) => setDescription(e.target.value)} />
                                 )
                             }
                         </Card.Body>
