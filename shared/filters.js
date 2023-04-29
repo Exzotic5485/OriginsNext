@@ -45,6 +45,11 @@ module.exports = [
         icon: ""
     },
     {
+        name: "Origins Jam",
+        value: "jam",
+        icon: ""
+    },
+    {
         name: "Other",
         value: "other",
         icon: ""
