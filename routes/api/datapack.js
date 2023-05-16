@@ -9,7 +9,7 @@ const {
 
 const { checkAuthenticated, checkCanManageDatapack } = require("../../utils/auth");
 
-const { datapackImageUpload, datapackFileUpload } = require("../../utils/multer");
+const { datapackImageUpload, datapackFileUpload, datapackImageAndFileUpload } = require("../../utils/multer");
 const axios = require("axios");
 
 function generateId(req, res, next) {
@@ -20,7 +20,7 @@ function generateId(req, res, next) {
 module.exports = {
     route: "/datapack",
     execute: ({ router, nextApp }) => {
-        router.post("/create", checkAuthenticated, generateId, datapackImageUpload.single("image"), async (req, res) => {
+        router.post("/create", checkAuthenticated, generateId, datapackImageAndFileUpload.fields([{ name: "image", maxCount: 1}, { name: "file", maxCount: 1 }]), async (req, res) => {
             try {
                 const { title, slug, description, summary, tags } = req.body;
 
@@ -36,9 +36,30 @@ module.exports = {
                     summary,
                     tags: JSON.parse(tags),
                     owner: req.user._id,
-                    image: req.file ? req.file.filename : "default.png",
+                    image: req.files.image > 0 ? req.files.image[0].filename : "default.png",
                     created: new Date(),
                 });
+
+                if(req.files.file) {
+                    const file = req.files.file[0]
+        
+                    const { fileDisplayName, fileVersions } = req.body;
+        
+                    await Datapacks.updateOne(
+                        { _id: datapack._id },
+                        {
+                            $push: {
+                                files: {
+                                    displayName: fileDisplayName,
+                                    supportedVersions: JSON.parse(fileVersions),
+                                    fileName: file.filename,
+                                    featured: true,
+                                    uploaded: new Date(),
+                                },
+                            },
+                        }
+                    );
+                }
 
                 res.sendStatus(200);
 

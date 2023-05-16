@@ -91,5 +91,39 @@ const userImageUpload = multer({
   }
 })
 
+const datapackImageAndFileUpload = multer({
+    limits: {
+        fileSize: 20000000
+    },
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+          if(file.fieldname == "image") cb(null, `./public/uploads/datapack/`)
+          else if(file.fieldname == "file") {
+            fs.mkdirSync(`./public/uploads/files/${req.generatedId}/`, { recursive: true })
+      
+            cb(null, `./public/uploads/files/${req.generatedId}/`)
+          }
+        },
+        filename: (req, file, cb) => {
+          if(file.fieldname == "image") cb(null, req.generatedId + ".png")
+          else if(file.fieldname == "file") cb(null, file.originalname.replace(" ", "_"))
+        }
+      }),
+      fileFilter: (req, file, cb) => {
+        const allowedFiles = ["png", "jpg", "jpeg", "zip"]
+        const fileExtensionArr = file.originalname.split(".")
+  
+        const fileExtension = fileExtensionArr[fileExtensionArr.length - 1];
 
-module.exports = { datapackImageUpload, datapackFileUpload, userImageUpload }
+        if(file.fieldname == "image" && fileExtension == "zip") return cb(null, false);
+  
+        if(allowedFiles.includes(fileExtension)) {
+          cb(null, true)
+        } else {
+          cb(null, false)
+        }
+      }
+})
+
+
+module.exports = { datapackImageUpload, datapackFileUpload, userImageUpload, datapackImageAndFileUpload }
