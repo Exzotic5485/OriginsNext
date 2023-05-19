@@ -19,15 +19,13 @@ function checkAuthenticated(req, res, next) {
 function checkCanManageDatapack(req, res, next) {
     const idOrSlug = req.params.id;
 
-    if(req?.user?.moderator) return next()
-
     Datapacks.findByIdOrSlug(idOrSlug).then((result) => {
         if(!result) {
             return res.redirect('/datapacks')
         }
 
         req.generatedId = result.id
-        if(result.owner.equals(req.user._id)) return next()
+        if(result.owner.equals(req.user._id) || req?.user?.moderator) return next()
 
         res.sendStatus(403)
     }).catch(e => {
